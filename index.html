@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1C2540">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex, nofollow">
+<title>Legal Case Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F4F7; --sheet:#FFFFFF; --ink:#1C2540; --muted:#5D6679; --rule:#D8DDE6; --rule-2:#E9ECF1;
+  --blue:#23468C; --blue-50:#E8EEF8; --violet:#5A3E9B; --violet-50:#F1EDF8;
+  --crimson:#B42318; --crimson-50:#FBEAE8; --amber:#8A5A00; --amber-50:#FBF3E2; --green:#2F6B3B; --green-50:#E8F2EA;
+  --font:'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --stamp:'Courier Prime', 'Courier New', Courier, monospace;
+  --nav-h:64px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.5 var(--font);font-variant-numeric:tabular-nums;
+  padding-top:env(safe-area-inset-top,0px)}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{margin:0;line-height:1.25}
+p{margin:0}
+:focus-visible{outline:3px solid #7FA2E6;outline-offset:2px;border-radius:6px}
+
+/* Header + nav */
+.top{background:var(--sheet);border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:20}
+.top-in{max-width:1120px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:18px}
+.brand{flex:1;min-width:0}
+.brand h1{font-size:19px;font-weight:700;letter-spacing:-.01em}
+.brand p{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav{display:flex;gap:2px}
+.nav button{border:0;background:none;padding:10px 12px;border-radius:8px;font-weight:600;font-size:14px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:7px;position:relative}
+.nav button svg{width:18px;height:18px;flex:none}
+.nav button[aria-current="page"]{color:var(--blue)}
+.nav button[aria-current="page"]::after{content:"";position:absolute;left:10px;right:10px;bottom:-13px;height:3px;background:var(--blue);border-radius:3px 3px 0 0}
+.nav .count{font-size:11px;background:var(--rule-2);color:var(--muted);border-radius:10px;padding:0 6px;font-weight:600}
+main{max-width:1120px;margin:0 auto;padding:18px 18px 40px}
+
+@media (max-width:760px){
+  .nav button{font-size:10.5px !important}
+  .top-in{padding:10px 14px}
+  .nav{position:fixed;left:0;right:0;bottom:0;background:var(--sheet);border-top:1px solid var(--rule);z-index:30;
+    padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));justify-content:space-around}
+  .nav button{flex:1;flex-direction:column;gap:2px;font-size:11.5px;padding:7px 2px;min-height:var(--nav-h)}
+  .nav button[aria-current="page"]::after{top:-4px;bottom:auto;left:28%;right:28%;border-radius:0 0 3px 3px}
+  .nav button[aria-current="page"]{background:var(--blue-50)}
+  .nav .count{display:none}
+  main{padding:14px 12px calc(var(--nav-h) + 30px + env(safe-area-inset-bottom,0px))}
+}
+
+/* Generic */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;padding:7px 14px;border-radius:8px;
+  border:1px solid var(--rule);background:var(--sheet);font-weight:600;font-size:14px;cursor:pointer;color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:#B7C0D0}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{background:#1B3972}
+.btn.danger{color:var(--crimson);border-color:#E9B8B3}
+.btn.ghost{border-color:transparent;background:none;color:var(--blue)}
+.btn.sm{min-height:34px;padding:5px 11px;font-size:13.5px}
+.btn svg{width:16px;height:16px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.muted{color:var(--muted)}
+.sec{margin-top:26px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+.sec-head h2{font-size:17px;font-weight:700}
+.sec-head .note{font-size:13px;color:var(--muted)}
+.empty{background:var(--sheet);border:1px dashed var(--rule);border-radius:10px;padding:22px;text-align:center;color:var(--muted)}
+.empty .btn{margin-top:10px}
+
+/* Forum badge */
+.fb{display:inline-flex;align-items:center;font-weight:700;font-size:11.5px;letter-spacing:.02em;color:var(--fc);border:1.5px solid var(--fc);border-radius:5px;padding:0 6px;line-height:18px;background:#fff}
+
+/* Overview */
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.hero h2{font-size:24px;font-weight:700;letter-spacing:-.015em}
+.hero p{color:var(--muted);font-size:14px}
+.tally{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:16px}
+.tile{background:var(--sheet);border:1px solid var(--rule);border-left:4px solid var(--fc);border-radius:8px;padding:10px 12px;text-align:left;cursor:pointer}
+.tile:hover{border-color:#B7C0D0;border-left-color:var(--fc)}
+.tile b{display:block;font-size:24px;line-height:1.1;font-weight:700}
+.tile span{font-size:13px;color:var(--muted)}
+.agenda{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.agenda-day{display:grid;grid-template-columns:96px 1fr;border-top:1px solid var(--rule-2)}
+.agenda-day:first-child{border-top:0}
+.agenda-date{padding:12px 10px;border-right:1px solid var(--rule-2);display:flex;justify-content:center;align-items:flex-start}
+.agenda-items{min-width:0}
+.ag-row{display:grid;grid-template-columns:70px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-top:1px solid var(--rule-2)}
+.ag-row:first-child{border-top:0}
+.ag-time{font-size:13px;font-weight:600;color:var(--muted)}
+.ag-main{min-width:0}
+.ag-main b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ag-main small{display:block;color:var(--muted);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:560px){
+  .agenda-day{grid-template-columns:74px 1fr}
+  .ag-row{grid-template-columns:1fr;gap:4px}
+  .ag-time{order:-1}
+}
+
+/* Stamp: the date, inked like an office rubber stamp */
+.stamp{--sc:var(--violet);display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:76px;padding:6px 2px 5px;
+  border:2px solid var(--sc);border-radius:6px;color:var(--sc);font-family:var(--stamp);font-weight:700;text-align:center;
+  transform:rotate(-2.5deg);box-shadow:inset 0 0 0 2px #fff,inset 0 0 0 3.5px var(--sc);background:#fff;line-height:1.05}
+.stamp .d{font-size:27px}
+.stamp .m{font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+.stamp .w{font-size:11px;margin-top:3px;font-weight:700;opacity:.9}
+.stamp.s-soon{--sc:var(--blue)}
+.stamp.s-today{--sc:var(--blue);background:var(--blue);color:#fff;box-shadow:inset 0 0 0 2px var(--blue),inset 0 0 0 3.5px #fff}
+.stamp.s-over{--sc:var(--crimson)}
+.stamp.s-none{--sc:#8A93A6;border-style:dashed;box-shadow:none;transform:none}
+.stamp.s-none .d{font-size:13px;line-height:1.2;padding:6px 0}
+.stamp.mini{width:64px;padding:4px 2px}
+.stamp.mini .d{font-size:22px}
+.stamp.mini .m{font-size:11px}
+
+/* Toolbar + chips */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search{flex:1 1 260px;position:relative}
+.search input{width:100%;min-height:42px;border:1px solid var(--rule);border-radius:9px;padding:9px 12px 9px 36px;background:var(--sheet)}
+.search svg{position:absolute;left:11px;top:12px;width:18px;height:18px;color:var(--muted)}
+.toolbar select{min-height:42px;border:1px solid var(--rule);border-radius:9px;padding:8px 10px;background:var(--sheet)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--rule);background:var(--sheet);border-radius:20px;padding:6px 12px;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--ink);display:flex;gap:6px;align-items:center}
+.chip i{font-style:normal;color:var(--muted);font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip[aria-pressed="true"] i{color:#C9D0DE}
+.group-h{display:flex;align-items:center;gap:10px;margin:22px 0 8px;font-size:15px;font-weight:700}
+.group-h .ln{flex:1;height:1px;background:var(--rule)}
+.group-h small{font-weight:500;color:var(--muted)}
+
+/* Case entry */
+.list{display:grid;gap:10px;margin-top:8px}
+.case{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:14px;display:grid;grid-template-columns:84px 1fr;gap:14px}
+.case.is-over{border-color:#EBC3BE;background:linear-gradient(90deg,var(--crimson-50),#fff 120px)}
+.case .side{display:flex;flex-direction:column;align-items:center;gap:8px}
+.case .over-note{font-size:11.5px;font-weight:700;color:var(--crimson);text-align:center;line-height:1.2}
+.case-body{min-width:0}
+.case-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.cno{font-weight:600;font-size:13.5px;color:var(--ink)}
+.case h3{font-size:16.5px;font-weight:700;margin-top:4px}
+.prop{font-size:13.5px;color:var(--muted);margin-top:2px}
+.stage{margin-top:8px;font-weight:600}
+.status-tag{display:inline-block;font-size:12px;font-weight:600;color:var(--amber);background:var(--amber-50);border-radius:5px;padding:1px 7px;margin-left:6px;vertical-align:1px}
+.kv{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:6px;font-size:13.5px}
+.kv span{color:var(--muted)}
+.kv b{font-weight:600;color:var(--ink)}
+.remark{margin-top:8px;font-size:13.5px;background:var(--paper);border-radius:6px;padding:6px 9px;white-space:pre-line}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.last-entry{margin-top:8px;font-size:13px;color:var(--muted)}
+.last-entry b{color:var(--ink);font-weight:600}
+@media (max-width:560px){
+  .case{grid-template-columns:70px 1fr;gap:11px;padding:12px}
+  .stamp{width:66px}
+  .stamp .d{font-size:23px}
+}
+
+/* Tenants */
+.tenant{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:14px;display:grid;grid-template-columns:auto 1fr;gap:14px}
+.plate{min-width:64px;height:48px;padding:0 8px;display:flex;align-items:center;justify-content:center;border:2px solid var(--ink);border-radius:6px;
+  font-weight:700;font-size:16px;letter-spacing:.02em;background:#fff;box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 4px var(--rule)}
+.tenant h3{font-size:16.5px;font-weight:700}
+.proc{display:inline-block;margin-top:6px;font-size:12.5px;font-weight:700;border-radius:5px;padding:2px 8px;background:var(--blue-50);color:var(--blue)}
+.proc.p-not{background:var(--violet-50);color:var(--violet)}
+.proc.p-app{background:var(--crimson-50);color:var(--crimson)}
+.proc.p-vac{background:var(--amber-50);color:var(--amber)}
+.t-status{margin-top:6px}
+
+/* Premises ledger */
+.ledger{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.lrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:11px 12px;border-top:1px solid var(--rule-2)}
+.lrow:first-child{border-top:0}
+.lrow .plate{min-width:58px;height:38px;font-size:14px}
+.lrow .plate.nia{border-color:#8A93A6;color:var(--muted);box-shadow:none}
+.lrow h3{font-size:15px;font-weight:700;line-height:1.3}
+.lrow .sub{font-size:13px;color:var(--muted);margin-top:1px}
+.lrow .tags{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:5px}
+.tag{font-size:12px;font-weight:600;border-radius:5px;padding:1px 7px;background:var(--paper);color:var(--ink)}
+.tag.court{background:var(--violet-50);color:var(--violet)}
+.tag.nia{background:var(--blue-50);color:var(--blue)}
+.tag.money{background:var(--green-50);color:var(--green)}
+.lrow .rem{font-size:12.5px;color:var(--amber);margin-top:4px}
+.lrow .occ{font-size:13px;margin-top:4px;white-space:pre-line}
+.lrow .fig{text-align:right;font-size:13px;white-space:nowrap}
+.lrow .fig b{display:block;font-size:14px}
+.gtot{font-size:13px;color:var(--green);font-weight:600;margin:-4px 0 8px}
+.pnote{font-size:13px;color:var(--muted);margin-top:10px}
+@media (max-width:560px){.lrow{gap:10px;padding:10px}.lrow .plate{min-width:50px}}
+
+/* Closed */
+.closed-item{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.closed-item h3{font-size:15.5px;font-weight:700}
+.outcome{display:inline-block;font-size:12.5px;font-weight:700;color:var(--green);background:var(--green-50);border-radius:5px;padding:1px 8px;margin-top:4px}
+
+/* Reports */
+.rep-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+@media (max-width:860px){.rep-grid{grid-template-columns:1fr}}
+.panel{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:16px}
+.panel h2{font-size:17px;font-weight:700;margin-bottom:4px}
+.panel > p{color:var(--muted);font-size:13.5px;margin-bottom:12px}
+.choice{display:grid;gap:6px}
+.choice label{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--rule);border-radius:9px;cursor:pointer}
+.choice label:has(input:checked){border-color:var(--blue);background:var(--blue-50)}
+.choice input{margin-top:3px;accent-color:var(--blue)}
+.choice b{display:block;font-weight:600}
+.choice small{color:var(--muted);font-size:13px}
+.rep-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.out-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.out-btns .btn{min-height:48px;flex-direction:column;gap:2px}
+.out-btns .btn small{font-weight:500;font-size:11.5px;opacity:.85}
+.stack{display:grid;gap:8px}
+.saved-at{font-size:12.5px;color:var(--muted);margin-top:10px}
+
+/* Forms */
+.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f-grid .full{grid-column:1/-1}
+@media (max-width:560px){.f-grid{grid-template-columns:1fr}}
+.fld{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fld > span{font-size:13px;font-weight:600;color:var(--muted)}
+.fld input,.fld select,.fld textarea{width:100%;border:1px solid var(--rule);border-radius:8px;padding:9px 11px;background:#fff;min-height:42px}
+.fld textarea{resize:vertical;min-height:70px;line-height:1.45}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--blue);outline:2px solid #C9D7F1;outline-offset:0}
+.fld .hint{font-size:12px;color:var(--muted);font-weight:400}
+.f-note{font-size:13px;color:var(--muted);background:var(--paper);border-radius:8px;padding:9px 11px}
+.err{color:var(--crimson);font-size:13px;font-weight:600}
+
+/* Modal */
+.modal-wrap{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}
+.scrim{position:absolute;inset:0;background:rgba(20,26,45,.45)}
+.modal{position:relative;background:var(--sheet);border-radius:12px;width:100%;max-width:580px;max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+  box-shadow:0 20px 50px rgba(20,26,45,.3);animation:rise .18s ease-out}
+.modal.wide{max-width:760px}
+.m-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--rule-2)}
+.m-head h2{flex:1;font-size:17px;font-weight:700}
+.m-body{padding:16px;overflow:auto}
+.m-foot{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid var(--rule-2);flex-wrap:wrap}
+.icon-btn{border:0;background:none;width:38px;height:38px;border-radius:8px;cursor:pointer;font-size:24px;line-height:1;color:var(--muted)}
+.icon-btn:hover{background:var(--paper)}
+@keyframes rise{from{transform:translateY(12px);opacity:.4}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.modal{animation:none}}
+@media (max-width:560px){
+  .modal-wrap{align-items:flex-end;padding:0}
+  .modal,.modal.wide{max-width:none;border-radius:14px 14px 0 0;max-height:94vh;padding-bottom:env(safe-area-inset-bottom,0px)}
+}
+.sheet-list{display:grid;gap:6px}
+.sheet-list button{text-align:left;border:1px solid var(--rule);background:#fff;border-radius:9px;padding:12px 14px;font-weight:600;cursor:pointer}
+.sheet-list button small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.sheet-list button.danger{color:var(--crimson)}
+.hist{display:grid;gap:0;border-left:2px solid var(--rule);margin-left:6px}
+.hist-item{position:relative;padding:0 0 14px 16px}
+.hist-item::before{content:"";position:absolute;left:-6px;top:6px;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid var(--violet)}
+.hist-item b{font-size:13px;color:var(--violet)}
+.hist-item p{white-space:pre-line}
+.hist-item .x{border:0;background:none;color:var(--muted);font-size:12.5px;cursor:pointer;padding:2px 0;text-decoration:underline}
+
+/* Toast */
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:80;display:grid;gap:8px;width:min(92vw,440px)}
+@media (max-width:760px){#toast{bottom:calc(var(--nav-h) + 22px + env(safe-area-inset-bottom,0px))}}
+.toast{background:var(--ink);color:#fff;border-radius:10px;padding:11px 14px;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;gap:12px;align-items:center;justify-content:space-between}
+.toast button{background:none;border:0;color:#AFC4F0;font-weight:700;cursor:pointer}
+
+/* Print */
+#printArea{display:none}
+@media print{
+  @page{size:A4 landscape;margin:11mm}
+  body{background:#fff;padding:0}
+  body.printing > *:not(#printArea){display:none !important}
+  body.printing #printArea{display:block}
+  #printArea{font:9.5pt/1.35 Arial, sans-serif;color:#000}
+  #printArea h1{font-size:13pt;margin:0}
+  #printArea h2{font-size:11.5pt;margin:12px 0 4px;color:#23468C}
+  #printArea .p-sub{font-size:10pt;margin:2px 0 8px}
+  #printArea table{width:calc(100% - 2px);border-collapse:collapse;page-break-inside:auto}
+  #printArea tr{page-break-inside:avoid}
+  #printArea th{background:#23468C !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;text-align:left;padding:4px 5px;font-size:9pt}
+  #printArea td{border:1px solid #9AA3B5;padding:4px 5px;vertical-align:top;white-space:pre-line}
+  #printArea td.over{color:#B42318;font-weight:700}
+  #printArea thead{display:table-header-group}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <h1>Legal Case Register</h1>
+      <p id="brandSub"></p>
+    </div>
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+  </div>
+</header>
+<main id="view" tabindex="-1"></main>
+<div id="modalRoot"></div>
+<div id="toast" aria-live="polite"></div>
+<div id="printArea"></div>
+<input type="file" id="restoreInput" accept=".json,application/json,text/plain,application/octet-stream" hidden>
+<datalist id="dl-adv"></datalist><datalist id="dl-opp"></datalist><datalist id="dl-val"></datalist>
+<datalist id="dl-stage"></datalist><datalist id="dl-status"></datalist><datalist id="dl-prop"></datalist><datalist id="dl-proc"></datalist><datalist id="dl-bldg"></datalist><datalist id="dl-block"></datalist>
+
+<script>
+'use strict';
+/* =========================================================
+   Legal Case Register — single-file app (GitHub Pages ready)
+   Data lives in this browser (localStorage). Use Reports >
+   Backup to move it between devices.
+   ========================================================= */
+
+const KEY = 'niaCaseRegister.v1';
+const APP_VERSION = 1;
+
+const FORUMS = [
+  {code:'EO',  name:'Estate Officer',     full:"Hon'ble Estate Officer",          color:'#5A3E9B'},
+  {code:'SC',  name:'Supreme Court',      full:"Hon'ble Supreme Court",           color:'#7A1F3D'},
+  {code:'HC',  name:'High Court',         full:"Hon'ble Bombay High Court",       color:'#23468C'},
+  {code:'CCC', name:'City Civil Court',   full:"Hon'ble Bombay City Civil Court", color:'#2F6B3B'},
+  {code:'SCC', name:'Small Causes Court', full:"Hon'ble Small Causes Court",      color:'#8A5A00'},
+  {code:'OTH', name:'Other forum',        full:'Other forum',                      color:'#5D6679'}
+];
+const FORUM = Object.fromEntries(FORUMS.map(f => [f.code, f]));
+
+const PROCESSES = ['Investigation','Investigator appointed','Notice of Termination to be sent','Notice of Termination served',
+  'Application to be filed','Valuation','Notice to vacate','Settlement talks','Other'];
+const OUTCOMES = ['Disposed','Dismissed','Withdrawn','Final order passed','Possession received','Settled / consent terms','Vacated','Other'];
+const STATUSES = ['Pending','Admitted','Pre-Admission Fresh','Sine die','Reserved for orders'];
+
+/* No case data is stored in this file. Load your register with Reports > Restore from backup. */
+
+/* ---------- Utilities ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const pad = n => String(n).padStart(2, '0');
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+function isoOf(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function todayISO(){ return isoOf(new Date()); }
+function dObj(iso){ const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d); }
+function addDays(iso, n){ const d = dObj(iso); d.setDate(d.getDate()+n); return isoOf(d); }
+function fmt(iso){ if(!iso) return ''; const [y,m,d] = iso.split('-'); return `${d}.${m}.${y}`; }
+function longDate(iso){ const d = dObj(iso); return `${WD[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]} ${d.getFullYear()}`; }
+function fmtTime(t){ if(!t) return ''; let [h,m] = t.split(':').map(Number); const ap = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12; return `${h}:${pad(m)} ${ap}`; }
+function esc(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escBr(s){ return esc(s).replace(/\n/g, '<br>'); }
+function validISO(s){ return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s); }
+function dateState(c){
+  const t = todayISO();
+  if(!c.nextDate) return 'none';
+  if(c.nextDate < t) return 'over';
+  if(c.nextDate === t) return 'today';
+  if(c.nextDate <= addDays(t, 7)) return 'soon';
+  return 'later';
+}
+function fc(code){ return (FORUM[code] || FORUM.OTH).color; }
+function forumBadge(code){ return `<span class="fb" style="--fc:${fc(code)}" title="${esc((FORUM[code]||FORUM.OTH).name)}">${esc(code)}</span>`; }
+
+/* ---------- Store ---------- */
+let state;
+function blankCase(){ return {id:uid('c'), forum:'EO', party:'', property:'', caseNo:'', status:'', stage:'', nextDate:'', time:'', lastDate:'', dateNote:'', advocate:'', oppAdvocate:'', valuer:'', remarks:'', history:[], updated:todayISO()}; }
+function blankTenant(){ return {id:uid('t'), property:'', flat:'', tenant:'', advocate:'', oppAdvocate:'', process:'Investigation', status:'', notes:'', history:[], updated:todayISO()}; }
+function seedState(){
+  return {
+    version: APP_VERSION,
+    settings: {org:'Organisation name', title:'Status of Pending Cases', subtitle:''},
+    cases: [],
+    tenants: [],
+    closed: [],
+    premises: blankPremises(),
+    savedAt: null
+  };
+}
+function blankPremises(){ return {flats:[], garages:[], quarters:[], areas:[], notes:{}}; }
+function normPremises(p){
+  p = Object.assign(blankPremises(), p || {});
+  ['flats','garages','quarters','areas'].forEach(k => { p[k] = (Array.isArray(p[k]) ? p[k] : []).map(x => Object.assign({id:uid('p')}, x)); });
+  p.notes = p.notes || {};
+  return p;
+}
+function normalize(s){
+  s.premises = normPremises(s.premises);
+  s.version = APP_VERSION;
+  s.settings = Object.assign({org:'Organisation name', title:'Status of Pending Cases', subtitle:''}, s.settings || {});
+  s.cases = (s.cases || []).map(c => Object.assign(blankCase(), c, {history: Array.isArray(c.history) ? c.history : []}));
+  s.tenants = (s.tenants || []).map(x => Object.assign(blankTenant(), x, {history: Array.isArray(x.history) ? x.history : []}));
+  s.closed = Array.isArray(s.closed) ? s.closed : [];
+  return s;
+}
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw){ const s = JSON.parse(raw); if(s && Array.isArray(s.cases)) return normalize(s); }
+  }catch(e){ console.warn('Load failed', e); }
+  return seedState();
+}
+function save(){
+  state.savedAt = new Date().toISOString();
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); }
+  catch(e){ toast('This browser did not allow saving. Download a backup from Reports so nothing is lost.'); }
+}
+
+/* ---------- UI state ---------- */
+const ui = {tab:'overview', forum:'ALL', q:'', sort:'date', tq:'', prem:{seg:'flats', q:'', grp:'ALL', held:'ALL'}, rep:{type:'full', forum:'ALL', from:'', to:'', closed:false, prem:'ALL'}};
+
+const ICONS = {
+  overview:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>',
+  cases:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 21h10M4 7h16"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/></svg>',
+  tenants:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg>',
+  premises:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V3h11v18M15 9h5v12M2 21h20M8 7h3M8 11h3M8 15h3"/></svg>',
+  closed:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v13H3zM2 3h20v4H2zM10 12h4"/></svg>',
+  reports:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>'
+};
+const TABS = [
+  {id:'overview', label:'Overview'},
+  {id:'cases', label:'Cases', count:() => state.cases.length},
+  {id:'tenants', label:'Individual', count:() => state.tenants.length},
+  {id:'premises', label:'Premises', count:() => premCount()},
+  {id:'closed', label:'Closed', count:() => state.closed.length},
+  {id:'reports', label:'Reports'}
+];
+
+/* ---------- Render: shell ---------- */
+function renderNav(){
+  $('#nav').innerHTML = TABS.map(t => `<button data-act="tab" data-tab="${t.id}" ${ui.tab===t.id?'aria-current="page"':''}>${ICONS[t.id]}<span>${t.label}</span>${t.count?`<span class="count">${t.count()}</span>`:''}</button>`).join('');
+  $('#brandSub').textContent = `${state.settings.org}  |  As on ${fmt(todayISO())}`;
+}
+function render(){
+  renderNav(); refreshDatalists();
+  ({overview:renderOverview, cases:renderCases, tenants:renderTenants, premises:renderPremises, closed:renderClosed, reports:renderReports})[ui.tab]();
+}
+function go(tab){
+  ui.tab = tab;
+  try{ history.replaceState(history.state, '', '#' + tab); }catch(e){}
+  render(); window.scrollTo(0, 0);
+}
+function refreshDatalists(){
+  const uniq = arr => [...new Set(arr.map(s => (s||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  const fill = (id, arr) => { $('#'+id).innerHTML = uniq(arr).map(v => `<option value="${esc(v)}">`).join(''); };
+  const all = [...state.cases, ...state.closed.filter(x=>x.kind==='case').map(x=>x.data)];
+  fill('dl-adv', [...all.map(c=>c.advocate), ...state.tenants.map(t=>t.advocate)]);
+  fill('dl-opp', [...all.map(c=>c.oppAdvocate), ...state.tenants.map(t=>t.oppAdvocate)]);
+  fill('dl-val', all.map(c=>c.valuer));
+  fill('dl-stage', [...all.map(c=>c.stage), 'For Hearing','For Orders','Inspection of documents','Cross examination of Applicant\'s Witness','For Admission','Arguments']);
+  fill('dl-status', [...all.map(c=>c.status), ...STATUSES]);
+  fill('dl-prop', [...state.tenants.map(t=>t.property), ...state.cases.map(c=>c.property.split('\n')[0])]);
+  fill('dl-proc', [...PROCESSES, ...state.tenants.map(t=>t.process)]);
+  fill('dl-bldg', [...state.premises.flats.map(f=>f.building), ...state.premises.areas.map(a=>a.building)]);
+  fill('dl-block', state.premises.quarters.map(q=>q.block));
+}
+
+/* ---------- Stamp ---------- */
+function stamp(c, mini){
+  const s = dateState(c);
+  if(s === 'none') return `<div class="stamp s-none${mini?' mini':''}" title="${esc(c.dateNote||'Next date not fixed')}"><span class="d">Date not fixed</span></div>`;
+  const d = dObj(c.nextDate);
+  return `<div class="stamp s-${s}${mini?' mini':''}" title="Next date ${fmt(c.nextDate)}"><span class="d">${pad(d.getDate())}</span><span class="m">${MON[d.getMonth()]} ${d.getFullYear()}</span>${mini?'':`<span class="w">${WD[d.getDay()]}${c.time?' '+esc(c.time):''}</span>`}</div>`;
+}
+
+/* ---------- Overview ---------- */
+function renderOverview(){
+  if(!state.cases.length && !state.tenants.length && !state.closed.length && !premCount()){
+    $('#view').innerHTML = `<section class="panel" style="max-width:620px;margin:24px auto">
+      <h2>Load your register</h2>
+      <p style="color:var(--muted);margin:6px 0 16px">No cases are saved on this device. The app does not carry any case data, so your register stays private. Open your backup file (.json) to load it here, or start adding cases.</p>
+      <div class="row"><button class="btn primary" data-act="restore-file">Restore from backup</button><button class="btn" data-act="new-case">Add case</button><button class="btn" data-act="new-tenant">Add individual tenant</button></div>
+      <p style="color:var(--muted);font-size:13px;margin-top:14px">Set the report heading (organisation name) under Reports.</p>
+    </section>`;
+    return;
+  }
+  const t = todayISO(), horizon = addDays(t, 30);
+  const upcoming = state.cases.filter(c => c.nextDate && c.nextDate >= t && c.nextDate <= horizon).sort(byDate);
+  const overdue = state.cases.filter(c => dateState(c) === 'over').sort(byDate);
+  const noDate = state.cases.filter(c => !c.nextDate);
+  const byDay = {};
+  upcoming.forEach(c => (byDay[c.nextDate] = byDay[c.nextDate] || []).push(c));
+  const counts = countByForum(state.cases);
+
+  const tiles = FORUMS.filter(f => counts[f.code]).map(f =>
+    `<button class="tile" style="--fc:${f.color}" data-act="goto-forum" data-forum="${f.code}"><b>${counts[f.code]}</b><span>${esc(f.name)}</span></button>`).join('')
+    + `<button class="tile" style="--fc:#1C2540" data-act="tab" data-tab="tenants"><b>${state.tenants.length}</b><span>Individual, case not filed</span></button>`
+    + (premCount() ? `<button class="tile" style="--fc:#5D6679" data-act="tab" data-tab="premises"><b>${state.premises.flats.length}</b><span>Flats on the premises list</span></button>` : '');
+
+  const agenda = Object.keys(byDay).length ? `<div class="agenda">${Object.keys(byDay).map(day => `
+      <div class="agenda-day">
+        <div class="agenda-date">${stamp({nextDate:day}, true)}</div>
+        <div class="agenda-items">${byDay[day].sort((a,b)=>(a.time||'99').localeCompare(b.time||'99')).map(c => agRow(c)).join('')}</div>
+      </div>`).join('')}</div>`
+    : `<div class="empty">No hearing is listed in the next 30 days.</div>`;
+
+  $('#view').innerHTML = `
+    <section class="hero">
+      <div><h2>${longDate(t)}</h2><p>${state.cases.length} pending cases and ${state.tenants.length} individual tenants on the register</p></div>
+      <div class="row"><button class="btn" data-act="new-tenant">Add individual tenant</button><button class="btn primary" data-act="new-case">Add case</button></div>
+    </section>
+    <div class="tally">${tiles}</div>
+    <section class="sec">
+      <div class="sec-head"><h2>Hearings in the next 30 days</h2><span class="note">${upcoming.length} listed</span></div>
+      ${agenda}
+    </section>
+    <section class="sec">
+      <div class="sec-head"><h2>Date has passed, record what happened</h2><span class="note">${overdue.length} cases</span></div>
+      ${overdue.length ? `<div class="agenda">${overdue.map(c => `<div class="agenda-day"><div class="agenda-date">${stamp(c, true)}</div><div class="agenda-items">${agRow(c, true)}</div></div>`).join('')}</div>`
+        : `<div class="empty">Every past hearing has been recorded.</div>`}
+    </section>
+    <section class="sec">
+      <div class="sec-head"><h2>Waiting for the next date</h2><span class="note">${noDate.length} cases</span></div>
+      ${noDate.length ? `<div class="agenda">${noDate.map(c => `<div class="ag-row"><span class="ag-time">${forumBadge(c.forum)}</span><div class="ag-main"><b>${esc(c.party)}</b><small>${esc(firstLine(c.caseNo))}${c.dateNote?'  |  '+esc(c.dateNote):''}</small></div><button class="btn sm" data-act="edit-case" data-id="${c.id}">Set date</button></div>`).join('')}</div>`
+        : `<div class="empty">All cases have a next date.</div>`}
+    </section>`;
+}
+function agRow(c, over){
+  return `<div class="ag-row">
+    <span class="ag-time">${c.time ? fmtTime(c.time) : (over ? '' : 'Time not set')}</span>
+    <div class="ag-main"><b>${forumBadge(c.forum)} ${esc(c.party)}</b><small>${esc(firstLine(c.caseNo))}  |  ${esc(c.stage || 'Stage not entered')}</small></div>
+    <button class="btn sm ${over?'primary':''}" data-act="hearing" data-id="${c.id}">Record hearing</button>
+  </div>`;
+}
+const firstLine = s => String(s||'').split('\n')[0];
+
+/* ---------- Cases ---------- */
+function countByForum(list){ const o = {}; list.forEach(c => o[c.forum] = (o[c.forum]||0) + 1); return o; }
+function byDate(a, b){
+  const ad = a.nextDate || '9999', bd = b.nextDate || '9999';
+  return ad.localeCompare(bd) || (a.time||'99').localeCompare(b.time||'99') || a.party.localeCompare(b.party);
+}
+function forumIndex(code){ const i = FORUMS.findIndex(f => f.code === code); return i < 0 ? 99 : i; }
+function sortCases(list, how){
+  const l = list.slice();
+  if(how === 'name') l.sort((a,b) => a.party.localeCompare(b.party));
+  else if(how === 'forum') l.sort((a,b) => forumIndex(a.forum)-forumIndex(b.forum) || byDate(a,b));
+  else if(how === 'caseno') l.sort((a,b) => a.caseNo.localeCompare(b.caseNo, undefined, {numeric:true}));
+  else l.sort(byDate);
+  return l;
+}
+function matchQ(obj, q, keys){ if(!q) return true; q = q.toLowerCase(); return keys.some(k => String(obj[k]||'').toLowerCase().includes(q)); }
+function filteredCases(){
+  const keys = ['party','property','caseNo','stage','status','advocate','oppAdvocate','valuer','remarks','dateNote'];
+  return sortCases(state.cases.filter(c => (ui.forum === 'ALL' || c.forum === ui.forum) && matchQ(c, ui.q, keys)), ui.sort);
+}
+function renderCases(){
+  const counts = countByForum(state.cases);
+  const chip = (code, label, n) => `<button class="chip" data-act="forum" data-forum="${code}" aria-pressed="${ui.forum===code}">${esc(label)} <i>${n}</i></button>`;
+  $('#view').innerHTML = `
+    <div class="toolbar">
+      <label class="search">${ICONS.search}<input type="search" id="q" placeholder="Search name, flat, case no., advocate" value="${esc(ui.q)}" aria-label="Search cases"></label>
+      <select id="sort" aria-label="Sort cases">
+        <option value="date" ${ui.sort==='date'?'selected':''}>Sort by next date</option>
+        <option value="forum" ${ui.sort==='forum'?'selected':''}>Group by forum</option>
+        <option value="name" ${ui.sort==='name'?'selected':''}>Sort by name</option>
+        <option value="caseno" ${ui.sort==='caseno'?'selected':''}>Sort by case no.</option>
+      </select>
+      <button class="btn" data-act="rep-from-cases">Print / export</button>
+      <button class="btn primary" data-act="new-case">Add case</button>
+    </div>
+    <div class="chips" role="group" aria-label="Filter by forum">${chip('ALL','All forums',state.cases.length)}${FORUMS.filter(f => counts[f.code] || ui.forum===f.code).map(f => chip(f.code, f.name, counts[f.code]||0)).join('')}</div>
+    <div id="caseList"></div>`;
+  $('#q').addEventListener('input', e => { ui.q = e.target.value; renderCaseList(); });
+  $('#sort').addEventListener('change', e => { ui.sort = e.target.value; renderCaseList(); });
+  renderCaseList();
+}
+function renderCaseList(){
+  const list = filteredCases();
+  const box = $('#caseList'); if(!box) return;
+  if(!list.length){ box.innerHTML = `<div class="empty" style="margin-top:12px">${ui.q ? 'No case matches this search. Try a flat number or part of the name.' : 'No pending case here.'}<br><button class="btn primary" data-act="new-case">Add case</button></div>`; return; }
+  if(ui.sort === 'forum'){
+    const groups = {};
+    list.forEach(c => (groups[c.forum] = groups[c.forum] || []).push(c));
+    box.innerHTML = Object.keys(groups).sort((a,b)=>forumIndex(a)-forumIndex(b)).map(f =>
+      `<div class="group-h">${forumBadge(f)} ${esc((FORUM[f]||FORUM.OTH).full)} <small>${groups[f].length}</small><span class="ln"></span></div><div class="list">${groups[f].map(caseCard).join('')}</div>`).join('');
+  } else box.innerHTML = `<div class="list">${list.map(caseCard).join('')}</div>`;
+}
+function caseCard(c){
+  const s = dateState(c);
+  const last = c.history && c.history[0] && !/^Added from the Excel sheet/.test(c.history[0].t) ? c.history[0] : null;
+  return `<article class="case ${s==='over'?'is-over':''}" id="case-${c.id}">
+    <div class="side">${stamp(c)}${s==='over'?'<span class="over-note">Date passed</span>':''}${s==='none'&&c.dateNote?`<span class="over-note" style="color:var(--muted);font-weight:500">${esc(c.dateNote)}</span>`:''}</div>
+    <div class="case-body">
+      <div class="case-top">${forumBadge(c.forum)}<span class="cno">${escBr(c.caseNo || 'Case no. not entered')}</span></div>
+      <h3>${esc(c.party)}</h3>
+      ${c.property?`<p class="prop">${escBr(c.property)}</p>`:''}
+      <p class="stage">${esc(c.stage || 'Stage not entered')}${c.status?`<span class="status-tag">${esc(c.status)}</span>`:''}</p>
+      <div class="kv">
+        ${c.lastDate?`<div><span>Last date</span> <b>${fmt(c.lastDate)}</b></div>`:''}
+        ${c.advocate?`<div><span>Our advocate</span> <b>${esc(c.advocate)}</b></div>`:''}
+        ${c.oppAdvocate?`<div><span>Opponent</span> <b>${esc(c.oppAdvocate)}</b></div>`:''}
+        ${c.valuer?`<div><span>Valuer</span> <b>${esc(c.valuer)}</b></div>`:''}
+      </div>
+      ${c.remarks?`<p class="remark">${esc(c.remarks)}</p>`:''}
+      ${last?`<p class="last-entry"><b>${fmt(last.d)}</b> ${esc(last.t.length>140?last.t.slice(0,140)+'...':last.t)}</p>`:''}
+      <div class="actions">
+        <button class="btn sm ${s==='over'?'primary':''}" data-act="hearing" data-id="${c.id}">Record hearing</button>
+        <button class="btn sm" data-act="edit-case" data-id="${c.id}">Edit</button>
+        <button class="btn sm" data-act="history-case" data-id="${c.id}">History</button>
+        <button class="btn sm ghost" data-act="case-more" data-id="${c.id}">More</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+/* ---------- Individual tenants ---------- */
+function procClass(p){
+  p = (p||'').toLowerCase();
+  if(p.includes('application')) return 'p-app';
+  if(p.includes('termination') || p.includes('notice of')) return 'p-not';
+  if(p.includes('vacate')) return 'p-vac';
+  return '';
+}
+function renderTenants(){
+  $('#view').innerHTML = `
+    <div class="toolbar">
+      <label class="search">${ICONS.search}<input type="search" id="tq" placeholder="Search tenant, flat, advocate, status" value="${esc(ui.tq)}" aria-label="Search individual tenants"></label>
+      <button class="btn" data-act="rep-from-tenants">Print / export</button>
+      <button class="btn primary" data-act="new-tenant">Add tenant</button>
+    </div>
+    <p class="muted" style="font-size:13.5px;margin-top:10px">Tenants where a case is not yet filed. Keep the process and latest status current here. When the case is filed, use <b>Case filed</b> to move the tenant into Cases with its history.</p>
+    <div id="tenantList"></div>`;
+  $('#tq').addEventListener('input', e => { ui.tq = e.target.value; renderTenantList(); });
+  renderTenantList();
+}
+function propOrder(){ const seen = []; state.tenants.forEach(t => seen.includes(t.property) || seen.push(t.property)); return seen; }
+function groupTenants(list){
+  const groups = {};
+  list.forEach(t => (groups[t.property || 'Property not entered'] = groups[t.property || 'Property not entered'] || []).push(t));
+  const order = propOrder();
+  const keys = Object.keys(groups).sort((a,b) => { const ia = order.indexOf(a), ib = order.indexOf(b); return (ia<0?99:ia)-(ib<0?99:ib) || a.localeCompare(b); });
+  keys.forEach(k => groups[k].sort((a,b) => a.flat.localeCompare(b.flat, undefined, {numeric:true})));
+  return keys.map(k => ({property:k, items:groups[k]}));
+}
+function renderTenantList(){
+  const keys = ['property','flat','tenant','advocate','oppAdvocate','process','status','notes'];
+  const list = state.tenants.filter(t => matchQ(t, ui.tq, keys));
+  const box = $('#tenantList'); if(!box) return;
+  if(!list.length){ box.innerHTML = `<div class="empty" style="margin-top:12px">${ui.tq?'No tenant matches this search.':'No individual tenant is waiting for a case.'}<br><button class="btn primary" data-act="new-tenant">Add tenant</button></div>`; return; }
+  box.innerHTML = groupTenants(list).map(g => `<div class="group-h">${esc(g.property)} <small>${g.items.length}</small><span class="ln"></span></div>
+    <div class="list">${g.items.map(tenantCard).join('')}</div>`).join('');
+}
+function tenantCard(t){
+  return `<article class="tenant" id="ten-${t.id}">
+    <div class="plate" title="Flat no.">${esc(t.flat || '?')}</div>
+    <div class="case-body">
+      <h3>${esc(t.tenant)}</h3>
+      <span class="proc ${procClass(t.process)}">${esc(t.process || 'Process not set')}</span>
+      ${t.status?`<p class="t-status">${esc(t.status)}</p>`:''}
+      <div class="kv">
+        ${t.advocate?`<div><span>Advocate</span> <b>${esc(t.advocate)}</b></div>`:''}
+        ${t.oppAdvocate?`<div><span>Opponent</span> <b>${esc(t.oppAdvocate)}</b></div>`:''}
+        <div><span>Updated</span> <b>${fmt(t.updated)}</b></div>
+      </div>
+      ${t.notes?`<p class="remark">${esc(t.notes)}</p>`:''}
+      <div class="actions">
+        <button class="btn sm" data-act="tenant-update" data-id="${t.id}">Update status</button>
+        <button class="btn sm primary" data-act="tenant-file" data-id="${t.id}">Case filed</button>
+        <button class="btn sm" data-act="edit-tenant" data-id="${t.id}">Edit</button>
+        <button class="btn sm ghost" data-act="tenant-more" data-id="${t.id}">More</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+/* ---------- Premises ---------- */
+const PSEG = {
+  flats:{label:'Flats', one:'flat', fields:[
+    {k:'building', l:'Building', list:'dl-bldg'}, {k:'wing', l:'Wing / side'}, {k:'floor', l:'Floor'}, {k:'unit', l:'Flat no.'},
+    {k:'name', l:'Name of occupant (as per list)', full:1, req:1}, {k:'current', l:'Current occupant / use', full:1},
+    {k:'servantQtr', l:'Servant quarter'}, {k:'garage', l:'Garage'}, {k:'court', l:'Court'}, {k:'caseRef', l:'Case no.'},
+    {k:'remarks', l:'Remarks', ta:1, full:1}]},
+  garages:{label:'Garages', one:'garage', fields:[
+    {k:'unit', l:'Garage no.'}, {k:'flat', l:'Flat no.'}, {k:'name', l:'Name', full:1, req:1}, {k:'remarks', l:'Remarks', ta:1, full:1}]},
+  quarters:{label:'Servant quarters', one:'servant quarter', fields:[
+    {k:'unit', l:'Quarter no.'}, {k:'block', l:'Building / block', list:'dl-block'}, {k:'name', l:'Allotted to', full:1, req:1},
+    {k:'occupants', l:'Servants / occupants', ta:1, full:1, hint:'one per line'}, {k:'remarks', l:'Remarks', ta:1, full:1}]},
+  areas:{label:'Area & rent', one:'area entry', fields:[
+    {k:'building', l:'Building', list:'dl-bldg', full:1}, {k:'sr', l:'Sr. no.'}, {k:'unit', l:'Flat / floor no.'},
+    {k:'name', l:'Name of tenant', full:1, req:1}, {k:'floor', l:'Floor'}, {k:'tenancy', l:'Nature of tenancy'},
+    {k:'area', l:'Area in sq. ft. (approx)'}, {k:'rent', l:'Monthly rent incl. S.C.'}, {k:'remarks', l:'Remarks', ta:1, full:1}]}
+};
+const PSEG_KEYS = Object.keys(PSEG);
+function premCount(){ const P = state.premises || {}; return PSEG_KEYS.reduce((n, k) => n + ((P[k]||[]).length), 0); }
+const isNIA = s => /new india|niacl/i.test(s || '') || /(^|[^A-Za-z])N\.?I\.?A\.?([^A-Za-z]|$)/.test(s || '');
+const numOf = v => { const t = String(v ?? '').replace(/,/g, '').trim(); return /^\d+(\.\d+)?$/.test(t) ? Number(t) : null; };
+const inr = n => Number(n).toLocaleString('en-IN');
+function flatKey(u){ return String(u||'').toUpperCase().replace(/[\s\-]/g, '/').replace(/\/+/g, '/'); }
+function areaFor(f){
+  if(!/mayfair garden/i.test(f.building||'')) return null;
+  return state.premises.areas.find(a => /mayfair garden/i.test(a.building||'') && flatKey(a.unit) === flatKey(f.unit)) || null;
+}
+function sameParty(a, b){
+  const words = s => String(s||'').toUpperCase().replace(/[^A-Z ]/g, ' ').split(/\s+/).filter(w => w.length > 3 && !['LTD','PVT','CORPN','LIMITED','INDIA','COMPANY'].includes(w));
+  const wa = words(a); return words(b).some(w => wa.includes(w));
+}
+function areaNote(f){
+  const a = areaFor(f); if(!a) return '';
+  const parts = [a.area && a.area + ' sq. ft.', a.rent && 'rent ' + a.rent].filter(Boolean).join(', ');
+  return parts + (a.name && !sameParty(a.name, f.name) ? ` (area list: ${a.name})` : '');
+}
+function groupKeyOf(seg, x){ return seg === 'quarters' ? (x.block || 'Block not entered') : seg === 'garages' ? 'Mayfair premises' : (x.building || 'Building not entered'); }
+function premGroups(seg, items){
+  const order = [], map = {};
+  items.forEach(x => { const g = groupKeyOf(seg, x); if(!map[g]){ map[g] = []; order.push(g); } map[g].push(x); });
+  return order.map(g => {
+    const out = {h:g, items:map[g]};
+    if(seg === 'areas'){ out.total = {area:map[g].reduce((n,a)=>n+(numOf(a.area)||0),0), rent:map[g].reduce((n,a)=>n+(numOf(a.rent)||0),0)}; }
+    return out;
+  });
+}
+function premFiltered(){
+  const P = state.premises, pr = ui.prem, seg = pr.seg;
+  const keys = PSEG[seg].fields.map(f => f.k);
+  return P[seg].filter(x => (pr.grp === 'ALL' || groupKeyOf(seg, x) === pr.grp)
+    && (seg !== 'flats' || pr.held === 'ALL' || (pr.held === 'NIA' ? isNIA(x.name) : !isNIA(x.name)))
+    && matchQ(x, pr.q, keys));
+}
+function renderPremises(){
+  const P = state.premises, pr = ui.prem, seg = pr.seg;
+  const groups = [...new Set(P[seg].map(x => groupKeyOf(seg, x)))];
+  if(pr.grp !== 'ALL' && !groups.includes(pr.grp)) pr.grp = 'ALL';
+  const segChip = k => `<button class="chip" data-act="pseg" data-seg="${k}" aria-pressed="${seg===k}">${PSEG[k].label} <i>${P[k].length}</i></button>`;
+  const heldChip = (v, l) => `<button class="chip" data-act="pheld" data-held="${v}" aria-pressed="${pr.held===v}">${l}</button>`;
+  $('#view').innerHTML = `
+    <div class="chips" role="group" aria-label="Premises lists" style="padding-top:0">${PSEG_KEYS.map(segChip).join('')}</div>
+    <div class="toolbar" style="margin-top:8px">
+      <label class="search">${ICONS.search}<input type="search" id="pq" placeholder="Search name, flat no., occupant" value="${esc(pr.q)}" aria-label="Search premises"></label>
+      ${groups.length > 1 ? `<select id="pgrp" aria-label="Building">${['ALL', ...groups].map(g => `<option value="${esc(g)}" ${pr.grp===g?'selected':''}>${g==='ALL'?'All buildings':esc(g)}</option>`).join('')}</select>` : ''}
+      <button class="btn" data-act="rep-from-premises">Print / export</button>
+      <button class="btn primary" data-act="prem-add">Add ${esc(PSEG[seg].one)}</button>
+    </div>
+    ${seg === 'flats' ? `<div class="chips" role="group" aria-label="Held by">${heldChip('ALL','All flats')}${heldChip('TEN','Held by tenants')}${heldChip('NIA','With NIACL')}</div>` : ''}
+    ${P.notes && P.notes[seg] ? `<p class="pnote">${esc(P.notes[seg])}</p>` : ''}
+    <div id="premList"></div>`;
+  $('#pq').addEventListener('input', e => { pr.q = e.target.value; renderPremList(); });
+  const gs = $('#pgrp'); if(gs) gs.addEventListener('change', e => { pr.grp = e.target.value; renderPremList(); });
+  renderPremList();
+}
+function renderPremList(){
+  const box = $('#premList'); if(!box) return;
+  const seg = ui.prem.seg, list = premFiltered();
+  if(!list.length){
+    box.innerHTML = `<div class="empty" style="margin-top:12px">${state.premises[seg].length ? 'Nothing matches this search or filter.' : `No ${esc(PSEG[seg].label.toLowerCase())} on record yet. Restore a backup that has the premises lists, or add entries.`}<br><button class="btn primary" data-act="prem-add">Add ${esc(PSEG[seg].one)}</button></div>`;
+    return;
+  }
+  box.innerHTML = premGroups(seg, list).map(g => `
+    <div class="group-h">${esc(g.h)} <small>${g.items.length}</small><span class="ln"></span></div>${g.total ? `<p class="gtot">Total ${inr(g.total.area)} sq. ft., rent Rs. ${inr(g.total.rent)} per month</p>` : ''}
+    <div class="ledger">${g.items.map(x => premRow(seg, x)).join('')}</div>`).join('');
+}
+function premRow(seg, x){
+  const edit = `<div class="edit-col"><button class="btn sm" data-act="prem-edit" data-id="${x.id}">Edit</button></div>`;
+  if(seg === 'flats'){
+    const nia = isNIA(x.name), a = areaFor(x);
+    const tags = [
+      nia ? `<span class="tag nia">NIACL</span>` : '',
+      x.court && !/^no case$/i.test(x.court) ? `<span class="tag court">${esc(x.court)}${x.caseRef?' '+esc(x.caseRef):''}</span>` : (x.court ? `<span class="tag">No case</span>` : ''),
+      x.servantQtr ? `<span class="tag">Servant qtr ${esc(x.servantQtr)}</span>` : '',
+      x.garage ? `<span class="tag">Garage ${esc(x.garage)}</span>` : '',
+      a && (a.area || a.rent) ? `<span class="tag money">${esc(areaNote(x))}</span>` : ''
+    ].join('');
+    return `<div class="lrow"><div class="plate${nia?' nia':''}">${esc(x.unit||'?')}</div><div style="min-width:0">
+      <h3>${esc(x.name || 'Name not entered')}</h3>
+      <p class="sub">${[x.floor, x.wing].filter(Boolean).map(esc).join(', ')}${x.current ? `${x.floor||x.wing?'  |  ':''}In use: ${esc(x.current)}` : ''}</p>
+      ${tags ? `<div class="tags">${tags}</div>` : ''}${x.remarks ? `<p class="rem">${esc(x.remarks)}</p>` : ''}</div>${edit}</div>`;
+  }
+  if(seg === 'garages') return `<div class="lrow"><div class="plate${isNIA(x.flat)?' nia':''}">G ${esc(x.unit)}</div><div style="min-width:0"><h3>${esc(x.name)}</h3><p class="sub">Flat ${esc(x.flat || 'not entered')}</p>${x.remarks?`<p class="rem">${esc(x.remarks)}</p>`:''}</div>${edit}</div>`;
+  if(seg === 'quarters') return `<div class="lrow"><div class="plate${isNIA(x.name)?' nia':''}">Q ${esc(x.unit)}</div><div style="min-width:0"><h3>${esc(x.name)}</h3>${x.occupants?`<p class="occ">${esc(x.occupants)}</p>`:''}${x.remarks?`<p class="rem">${esc(x.remarks)}</p>`:''}</div>${edit}</div>`;
+  return `<div class="lrow"><div class="plate">${esc(x.unit || x.sr || '?')}</div><div style="min-width:0">
+    <h3>${esc(x.name)}</h3><p class="sub">${[x.floor && x.floor + ' floor', x.tenancy].filter(Boolean).map(esc).join('  |  ')}</p>${x.remarks?`<p class="rem">${esc(x.remarks)}</p>`:''}</div>
+    <div class="edit-col"><div class="fig"><b>${x.rent ? (numOf(x.rent)!==null ? 'Rs. ' + esc(x.rent) : esc(x.rent)) : ''}</b>${x.area ? esc(x.area) + ' sq. ft.' : ''}</div><button class="btn sm" data-act="prem-edit" data-id="${x.id}" style="margin-top:6px">Edit</button></div></div>`;
+}
+function premForm(seg, existing){
+  const cfg = PSEG[seg], isNew = !existing;
+  const x = existing || {id:uid('p'), building: ui.prem.grp !== 'ALL' && seg !== 'quarters' ? ui.prem.grp : '', block: seg === 'quarters' && ui.prem.grp !== 'ALL' ? ui.prem.grp : ''};
+  openModal({title:(isNew ? 'Add ' : 'Edit ') + cfg.one, wide:true,
+    body:`<div class="f-grid">${cfg.fields.map(f => fld(f.l, f.k, x[f.k] || '', {type:f.ta?'textarea':'text', rows:f.k==='occupants'?5:2, full:f.full, list:f.list, hint:f.hint, required:f.req})).join('')}</div><p class="err" id="ferr" style="margin-top:10px"></p>`,
+    footer:`${isNew ? '' : '<button class="btn danger" data-del style="margin-right:auto">Delete</button>'}<button class="btn" data-close>Cancel</button><button class="btn primary" data-save>${isNew ? 'Add' : 'Save changes'}</button>`,
+    onMount(root){
+      root.querySelector('[data-save]').addEventListener('click', () => {
+        const v = readForm(root);
+        if(!v.name){ $('#ferr', root).textContent = 'Enter the name.'; return; }
+        Object.assign(x, v, {updated: todayISO()});
+        if(isNew) state.premises[seg].push(x);
+        save(); closeTop(); render(); toast(isNew ? 'Added' : 'Changes saved');
+      });
+      const d = root.querySelector('[data-del]');
+      if(d) d.addEventListener('click', async () => {
+        if(await askConfirm(`Delete <b>${esc(x.name)}</b> from ${esc(cfg.label.toLowerCase())}?`, 'Delete', true)){
+          const arr = state.premises[seg], i = arr.indexOf(x);
+          if(i >= 0){ arr.splice(i, 1); save(); closeTop(); render(); toast('Deleted', {label:'Undo', fn:() => { arr.splice(i, 0, x); save(); render(); }}); }
+        }
+      });
+    }});
+}
+
+/* ---------- Closed ---------- */
+function renderClosed(){
+  const list = state.closed.slice().sort((a,b) => (b.closedOn||'').localeCompare(a.closedOn||''));
+  $('#view').innerHTML = `
+    <div class="sec-head"><h2>Closed matters</h2><span class="note">Kept for reference. Restore one if it reopens.</span></div>
+    ${list.length ? `<div class="list">${list.map(x => {
+      const d = x.data, isCase = x.kind === 'case';
+      return `<div class="closed-item">
+        <div style="min-width:0;flex:1">
+          <div class="case-top">${isCase ? forumBadge(d.forum) : '<span class="fb" style="--fc:#1C2540">IND</span>'}<span class="cno">${isCase ? escBr(d.caseNo) : 'Flat ' + esc(d.flat) + ', ' + esc(d.property)}</span></div>
+          <h3 style="margin-top:4px">${esc(isCase ? d.party : d.tenant)}</h3>
+          <span class="outcome">${esc(x.outcome)} on ${fmt(x.closedOn)}</span>
+          ${x.note?`<p class="remark">${esc(x.note)}</p>`:''}
+        </div>
+        <div class="row"><button class="btn sm" data-act="restore" data-id="${d.id}">Restore</button><button class="btn sm danger" data-act="delete-closed" data-id="${d.id}">Delete</button></div>
+      </div>`;}).join('')}</div>`
+      : `<div class="empty">Nothing closed yet. When a case is disposed or a tenant vacates, use <b>More &gt; Mark as closed</b> to move it here.</div>`}`;
+}
+
+/* ---------- Reports ---------- */
+function renderReports(){
+  const r = ui.rep, t = todayISO();
+  if(!r.from) r.from = t; if(!r.to) r.to = addDays(t, 30);
+  const opt = (v, label, desc) => `<label><input type="radio" name="rtype" value="${v}" ${r.type===v?'checked':''}><span><b>${label}</b><small>${desc}</small></span></label>`;
+  $('#view').innerHTML = `
+    <div class="rep-grid">
+      <section class="panel">
+        <h2>Print or export</h2>
+        <p>Pick what goes into the report, then choose Excel, PDF or print.</p>
+        <div class="choice">
+          ${opt('full','Full status report','Pending cases forum-wise, then individual tenants. Same layout as your Excel sheet.')}
+          ${opt('cases','Pending cases only','All forums, or one forum.')}
+          ${opt('tenants','Individual tenants only','Tenants where a case is yet to be filed.')}
+          ${opt('diary','Hearing diary','Hearings between two dates, in date order.')}
+          ${opt('closed','Closed matters','Disposed cases and vacated tenants.')}
+          ${opt('premises','Premises lists','Flats, garages, servant quarters, area and rent.')}
+        </div>
+        <div class="rep-opts">
+          <label class="fld" id="o-forum"><span>Forum</span><select id="rforum"><option value="ALL">All forums</option>${FORUMS.map(f=>`<option value="${f.code}" ${r.forum===f.code?'selected':''}>${esc(f.name)}</option>`).join('')}</select></label>
+          <label class="fld" id="o-prem"><span>List</span><select id="rprem"><option value="ALL">All premises lists</option>${PSEG_KEYS.map(k=>`<option value="${k}" ${r.prem===k?'selected':''}>${esc(PSEG[k].label)}</option>`).join('')}</select></label>
+          <label class="fld" id="o-closed"><span>Also include</span><select id="rclosed"><option value="0">Nothing else</option><option value="1" ${r.closed?'selected':''}>Closed matters at the end</option></select></label>
+          <label class="fld" id="o-from"><span>From</span><input type="date" id="rfrom" value="${r.from}"></label>
+          <label class="fld" id="o-to"><span>To</span><input type="date" id="rto" value="${r.to}"></label>
+        </div>
+        <div class="out-btns">
+          <button class="btn primary" data-act="rep-excel">Excel<small>.xlsx file</small></button>
+          <button class="btn primary" data-act="rep-pdf">PDF<small>A4 landscape</small></button>
+          <button class="btn" data-act="rep-print">Print<small>from browser</small></button>
+        </div>
+      </section>
+      <div class="stack">
+        <section class="panel">
+          <h2>Backup</h2>
+          <p>Entries are saved in this browser only. Download a backup regularly, and use it to move the register to another phone or computer.</p>
+          <div class="row"><button class="btn" data-act="backup">Download backup</button><button class="btn" data-act="restore-file">Restore from backup</button></div>
+          <p class="saved-at">${state.savedAt ? 'Last saved on this device: ' + fmt(isoOf(new Date(state.savedAt))) + ' ' + new Date(state.savedAt).toTimeString().slice(0,5) : 'Not changed yet on this device.'}</p>
+        </section>
+        <section class="panel">
+          <h2>Report heading</h2>
+          <p>Printed at the top of every Excel sheet and PDF page.</p>
+          <div class="stack">
+            <label class="fld"><span>Organisation</span><input id="s-org" value="${esc(state.settings.org)}"></label>
+            <label class="fld"><span>Report title</span><input id="s-title" value="${esc(state.settings.title)}"></label>
+            <label class="fld"><span>Second line <span class="hint">(optional)</span></span><input id="s-sub" value="${esc(state.settings.subtitle||'')}"></label>
+            <div class="row"><button class="btn" data-act="save-settings">Save heading</button></div>
+          </div>
+        </section>
+        <section class="panel">
+          <h2>Clear this device</h2>
+          <p>Removes every case and tenant from this browser, for example on a shared computer. Download a backup first.</p>
+          <button class="btn danger" data-act="reset">Clear all data</button>
+        </section>
+      </div>
+    </div>`;
+  const sync = () => {
+    r.type = ($('input[name=rtype]:checked')||{}).value || 'full';
+    r.forum = $('#rforum').value; r.closed = $('#rclosed').value === '1';
+    r.from = $('#rfrom').value; r.to = $('#rto').value; r.prem = $('#rprem').value;
+    $('#o-prem').style.display = r.type==='premises' ? '' : 'none';
+    $('#o-forum').style.display = (r.type==='full'||r.type==='cases') ? '' : 'none';
+    $('#o-closed').style.display = r.type==='full' ? '' : 'none';
+    $('#o-from').style.display = $('#o-to').style.display = r.type==='diary' ? '' : 'none';
+  };
+  $$('input[name=rtype], #rforum, #rclosed, #rfrom, #rto, #rprem').forEach(el => el.addEventListener('change', sync));
+  sync();
+}
+
+/* ---------- Modal system (works with Android back button) ---------- */
+const modalStack = []; let pendingBack = 0, armed = false;
+/* One history entry stands for "a dialog is open", so the phone's back button closes the top dialog. */
+function arm(){
+  if(armed || !modalStack.length || pendingBack > 0) return;
+  try{ history.pushState({modal:1}, ''); armed = true; }catch(e){}
+}
+function openModal({title, body, footer, wide, onMount}){
+  const wrap = document.createElement('div');
+  wrap.className = 'modal-wrap';
+  wrap.innerHTML = `<div class="scrim"></div><section class="modal${wide?' wide':''}" role="dialog" aria-modal="true" aria-label="${esc(title)}">
+    <header class="m-head"><h2>${esc(title)}</h2><button class="icon-btn" data-close aria-label="Close">&times;</button></header>
+    <div class="m-body">${body}</div>${footer?`<footer class="m-foot">${footer}</footer>`:''}</section>`;
+  $('#modalRoot').appendChild(wrap);
+  const m = {el:wrap, root:wrap.querySelector('.modal')};
+  modalStack.push(m);
+  arm();
+  wrap.querySelector('.scrim').addEventListener('click', closeTop);
+  $$('[data-close]', wrap).forEach(b => b.addEventListener('click', closeTop));
+  if(onMount) onMount(m.root, m);
+  return m;
+}
+function closeTop(){
+  const m = modalStack.pop(); if(!m) return;
+  m.el.remove();
+  if(!modalStack.length && armed){
+    armed = false; pendingBack++;
+    try{ history.back(); }catch(e){ pendingBack--; }
+  }
+}
+window.addEventListener('popstate', () => {
+  if(pendingBack > 0){ pendingBack--; arm(); return; }
+  armed = false;
+  const m = modalStack.pop(); if(m) m.el.remove();
+  arm();
+});
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && modalStack.length) closeTop(); });
+
+function askConfirm(message, okLabel, danger){
+  return new Promise(res => {
+    let done = false;
+    openModal({title:'Please confirm', body:`<p>${message}</p>`,
+      footer:`<button class="btn" data-close>Cancel</button><button class="btn ${danger?'danger':'primary'}" data-ok>${esc(okLabel)}</button>`,
+      onMount(root){
+        root.querySelector('[data-ok]').addEventListener('click', () => { done = true; closeTop(); res(true); });
+        const obs = new MutationObserver(() => { if(!root.isConnected){ obs.disconnect(); if(!done) res(false); } });
+        obs.observe($('#modalRoot'), {childList:true});
+      }});
+  });
+}
+function toast(msg, action){
+  $('#toast').innerHTML = '';
+  const el = document.createElement('div'); el.className = 'toast';
+  el.innerHTML = `<span>${esc(msg)}</span>${action?`<button>${esc(action.label)}</button>`:''}`;
+  if(action) el.querySelector('button').addEventListener('click', () => { action.fn(); el.remove(); });
+  $('#toast').appendChild(el);
+  setTimeout(() => el.remove(), action ? 7000 : 3800);
+}
+
+/* ---------- Form helpers ---------- */
+function fld(label, name, value, {type='text', list, full, rows, hint, options, required}={}){
+  const lab = `<span>${esc(label)}${required?' *':''}${hint?` <span class="hint">${esc(hint)}</span>`:''}</span>`;
+  let ctl;
+  if(type === 'textarea') ctl = `<textarea name="${name}" rows="${rows||3}">${esc(value)}</textarea>`;
+  else if(type === 'select') ctl = `<select name="${name}">${options.map(o => { const [v,l] = Array.isArray(o)?o:[o,o]; return `<option value="${esc(v)}" ${v===value?'selected':''}>${esc(l)}</option>`; }).join('')}</select>`;
+  else ctl = `<input type="${type}" name="${name}" value="${esc(value)}" ${list?`list="${list}"`:''} autocomplete="off">`;
+  return `<label class="fld${full?' full':''}">${lab}${ctl}</label>`;
+}
+function readForm(root){ const o = {}; $$('[name]', root).forEach(el => o[el.name] = el.value.trim()); return o; }
+function findCase(id){ return state.cases.find(c => c.id === id); }
+function findTenant(id){ return state.tenants.find(t => t.id === id); }
+
+/* ---------- Case: add / edit ---------- */
+function caseForm(existing, prefill, onSaved){
+  const c = existing ? existing : Object.assign(blankCase(), prefill || {});
+  const isNew = !existing;
+  openModal({title: isNew ? (prefill && prefill._fromTenant ? 'File case for ' + c.party : 'Add case') : 'Edit case', wide:true,
+    body: `${prefill && prefill._fromTenant ? `<p class="f-note" style="margin-bottom:12px">Enter the case details. On saving, ${esc(c.party)} moves from Individual to Cases and keeps the earlier status history.</p>` : ''}
+    <div class="f-grid">
+      ${fld('Forum','forum',c.forum,{type:'select',options:FORUMS.map(f=>[f.code,f.name])})}
+      ${fld('Case no. / year','caseNo',c.caseNo,{type:'textarea',rows:2,hint:'one number per line'})}
+      ${fld('Name of the unauthorised occupant','party',c.party,{full:true,required:true})}
+      ${fld('Location of the property','property',c.property,{type:'textarea',rows:2,full:true})}
+      ${fld('Next date','nextDate',c.nextDate,{type:'date'})}
+      ${fld('Time','time',c.time,{type:'time'})}
+      ${fld('Stage / purpose of next date','stage',c.stage,{list:'dl-stage',full:true})}
+      ${fld('Last date','lastDate',c.lastDate,{type:'date'})}
+      ${fld('Case status','status',c.status,{list:'dl-status',hint:'e.g. Admitted'})}
+      ${fld('Note about the date','dateNote',c.dateNote,{full:true,hint:'e.g. Next date yet to be given by court'})}
+      ${fld('Our advocate','advocate',c.advocate,{list:'dl-adv'})}
+      ${fld('Opponent advocate','oppAdvocate',c.oppAdvocate,{list:'dl-opp'})}
+      ${fld('Valuer','valuer',c.valuer,{list:'dl-val'})}
+      ${fld('Remarks','remarks',c.remarks,{type:'textarea',rows:2,full:true,hint:'possession, settlement, orders'})}
+    </div><p class="err" id="ferr" style="margin-top:10px"></p>`,
+    footer:`<button class="btn" data-close>Cancel</button><button class="btn primary" data-save>${isNew ? (prefill && prefill._fromTenant ? 'Save and move to Cases' : 'Add case') : 'Save changes'}</button>`,
+    onMount(root){
+      root.querySelector('[data-save]').addEventListener('click', () => {
+        const v = readForm(root);
+        if(!v.party){ $('#ferr', root).textContent = 'Enter the name of the occupant.'; return; }
+        if(v.nextDate && !validISO(v.nextDate)){ $('#ferr', root).textContent = 'Next date is not a valid date.'; return; }
+        const changed = !isNew && Object.keys(v).some(k => String(c[k] || '') !== v[k]);
+        Object.assign(c, v, {updated: todayISO()});
+        if(isNew){
+          delete c._fromTenant;
+          if(!c.history.length || !(prefill && prefill._fromTenant)) c.history.unshift({d:todayISO(), t:'Case added to the register.'});
+          state.cases.push(c);
+        } else if(changed){
+          c.history.unshift({d:todayISO(), t:'Details edited.' + (v.nextDate ? ` Next date ${fmt(v.nextDate)}.` : '')});
+        }
+        save(); closeTop();
+        if(onSaved) onSaved(c);
+        render(); toast(isNew ? 'Case added' : 'Changes saved');
+      });
+    }});
+}
+
+/* ---------- Case: record hearing ---------- */
+function hearingForm(c){
+  const hd = c.nextDate && c.nextDate <= todayISO() ? c.nextDate : todayISO();
+  openModal({title:'Record hearing', wide:true,
+    body:`<p class="f-note" style="margin-bottom:12px">${forumBadge(c.forum)} <b>${esc(c.party)}</b><br>${escBr(c.caseNo)}${c.stage?'<br>Listed for: '+esc(c.stage):''}</p>
+    <div class="f-grid">
+      ${fld('Hearing date','hd',hd,{type:'date'})}
+      ${fld('Case status','status',c.status,{list:'dl-status'})}
+      ${fld('What happened on this date','what','',{type:'textarea',rows:3,full:true,hint:'e.g. Adjourned at request of opponent'})}
+      ${fld('Next date','nextDate','',{type:'date'})}
+      ${fld('Time','time',c.time,{type:'time'})}
+      ${fld('Stage / purpose of next date','stage',c.stage,{list:'dl-stage',full:true})}
+      ${fld('Note about the date','dateNote','',{full:true,hint:'use when no next date is given'})}
+    </div><p class="err" id="ferr" style="margin-top:10px"></p>`,
+    footer:`<button class="btn" data-close>Cancel</button><button class="btn primary" data-save>Save hearing</button>`,
+    onMount(root){
+      root.querySelector('[data-save]').addEventListener('click', () => {
+        const v = readForm(root);
+        if(!validISO(v.hd)){ $('#ferr', root).textContent = 'Enter the hearing date.'; return; }
+        if(!v.what && !v.nextDate){ $('#ferr', root).textContent = 'Write what happened, or enter the next date.'; return; }
+        const parts = [];
+        if(v.what) parts.push(v.what);
+        parts.push(v.nextDate ? `Next date ${fmt(v.nextDate)}${v.time?' at '+fmtTime(v.time):''}${v.stage?' for '+v.stage:''}.` : (v.dateNote || 'Next date not given.'));
+        c.history.unshift({d:v.hd, t:parts.join(' ')});
+        c.lastDate = v.hd; c.nextDate = v.nextDate; c.time = v.nextDate ? v.time : '';
+        c.stage = v.stage; c.status = v.status; c.dateNote = v.dateNote; c.updated = todayISO();
+        save(); closeTop(); render(); toast('Hearing saved');
+      });
+    }});
+}
+
+/* ---------- History ---------- */
+function historyModal(item, kind){
+  const title = kind === 'case' ? item.party : item.tenant;
+  const draw = root => {
+    $('.hist-box', root).innerHTML = item.history.length ? `<div class="hist">${item.history.map((h,i) => `<div class="hist-item"><b>${fmt(h.d)}</b><p>${esc(h.t)}</p><button class="x" data-del="${i}">Remove entry</button></div>`).join('')}</div>` : '<p class="muted">No entries yet.</p>';
+    $$('[data-del]', root).forEach(b => b.addEventListener('click', async () => {
+      const i = +b.dataset.del;
+      if(await askConfirm('Remove this history entry?', 'Remove', true)){ item.history.splice(i,1); save(); draw(root); render(); }
+    }));
+  };
+  openModal({title:'History: ' + title, wide:true,
+    body:`<div class="f-grid" style="margin-bottom:16px">${fld('Date','d',todayISO(),{type:'date'})}${fld('Add a note','t','',{type:'textarea',rows:2,full:true})}</div>
+      <div class="row" style="margin-bottom:18px"><button class="btn" data-add>Add note</button></div><div class="hist-box"></div>`,
+    footer:`<button class="btn" data-close>Done</button>`,
+    onMount(root){
+      draw(root);
+      root.querySelector('[data-add]').addEventListener('click', () => {
+        const d = $('[name=d]', root).value, t = $('[name=t]', root).value.trim();
+        if(!t || !validISO(d)) return;
+        item.history.unshift({d, t}); item.history.sort((a,b) => b.d.localeCompare(a.d));
+        item.updated = todayISO(); save(); $('[name=t]', root).value = ''; draw(root); render();
+      });
+    }});
+}
+
+/* ---------- Close / restore ---------- */
+function closeForm(item, kind){
+  openModal({title:'Mark as closed',
+    body:`<p class="f-note" style="margin-bottom:12px"><b>${esc(kind==='case'?item.party:item.tenant)}</b><br>It moves to Closed and drops out of pending reports. You can restore it later.</p>
+      <div class="f-grid">${fld('Closed on','closedOn',todayISO(),{type:'date'})}${fld('Outcome','outcome',kind==='case'?'Disposed':'Vacated',{type:'select',options:OUTCOMES})}${fld('Note','note','',{type:'textarea',rows:2,full:true,hint:'order details, possession date'})}</div>`,
+    footer:`<button class="btn" data-close>Cancel</button><button class="btn primary" data-save>Mark as closed</button>`,
+    onMount(root){
+      root.querySelector('[data-save]').addEventListener('click', () => {
+        const v = readForm(root);
+        item.history.unshift({d:v.closedOn || todayISO(), t:`Closed: ${v.outcome}.${v.note?' '+v.note:''}`});
+        const arr = kind === 'case' ? state.cases : state.tenants;
+        arr.splice(arr.indexOf(item), 1);
+        state.closed.push({kind, data:item, closedOn:v.closedOn || todayISO(), outcome:v.outcome, note:v.note});
+        save(); closeTop(); render(); toast('Moved to Closed');
+      });
+    }});
+}
+function restoreClosed(id){
+  const i = state.closed.findIndex(x => x.data.id === id); if(i < 0) return;
+  const x = state.closed.splice(i, 1)[0];
+  x.data.history.unshift({d:todayISO(), t:'Restored from Closed.'});
+  (x.kind === 'case' ? state.cases : state.tenants).push(x.data);
+  save(); render(); toast('Restored');
+}
+
+/* ---------- Tenants: add / edit / update / file case ---------- */
+function tenantForm(existing, prefill){
+  const t = existing || Object.assign(blankTenant(), prefill || {}), isNew = !existing;
+  openModal({title: isNew ? 'Add individual tenant' : 'Edit tenant', wide:true,
+    body:`<div class="f-grid">
+      ${fld('Property','property',t.property,{list:'dl-prop',required:true})}
+      ${fld('Flat no.','flat',t.flat)}
+      ${fld('Name of tenant / occupant','tenant',t.tenant,{full:true,required:true})}
+      ${fld('Process','process',t.process,{list:'dl-proc',hint:'pick or type'})}
+      ${fld('Advocate','advocate',t.advocate,{list:'dl-adv'})}
+      ${fld('Latest status','status',t.status,{type:'textarea',rows:2,full:true})}
+      ${fld('Opponent advocate / firm','oppAdvocate',t.oppAdvocate,{list:'dl-opp'})}
+      ${fld('Notes','notes',t.notes,{type:'textarea',rows:2,full:true})}
+    </div><p class="err" id="ferr" style="margin-top:10px"></p>`,
+    footer:`<button class="btn" data-close>Cancel</button><button class="btn primary" data-save>${isNew?'Add tenant':'Save changes'}</button>`,
+    onMount(root){
+      root.querySelector('[data-save]').addEventListener('click', () => {
+        const v = readForm(root);
+        if(!v.tenant){ $('#ferr', root).textContent = 'Enter the tenant name.'; return; }
+        const statusChanged = v.status !== t.status || v.process !== t.process;
+        Object.assign(t, v, {updated: todayISO()});
+        if(isNew){ t.history.unshift({d:todayISO(), t:`Added. ${v.process}${v.status?': '+v.status:''}`}); state.tenants.push(t); }
+        else if(statusChanged) t.history.unshift({d:todayISO(), t:`${v.process}${v.status?': '+v.status:''}`});
+        save(); closeTop(); render(); toast(isNew ? 'Tenant added' : 'Changes saved');
+      });
+    }});
+}
+function tenantUpdate(t){
+  openModal({title:'Update status',
+    body:`<p class="f-note" style="margin-bottom:12px"><b>${esc(t.tenant)}</b>, Flat ${esc(t.flat)}, ${esc(t.property)}<br>Now: ${esc(t.process)}${t.status?', '+esc(t.status):''}</p>
+      <div class="f-grid">${fld('Date','d',todayISO(),{type:'date'})}${fld('Process','process',t.process,{list:'dl-proc'})}${fld('Latest status','status',t.status,{type:'textarea',rows:3,full:true})}${fld('Advocate','advocate',t.advocate,{list:'dl-adv'})}</div>`,
+    footer:`<button class="btn" data-close>Cancel</button><button class="btn primary" data-save>Save status</button>`,
+    onMount(root){
+      root.querySelector('[data-save]').addEventListener('click', () => {
+        const v = readForm(root);
+        t.process = v.process; t.status = v.status; t.advocate = v.advocate; t.updated = validISO(v.d) ? v.d : todayISO();
+        t.history.unshift({d:t.updated, t:`${v.process}${v.status?': '+v.status:''}`});
+        save(); closeTop(); render(); toast('Status saved');
+      });
+    }});
+}
+function fileCaseFromTenant(t){
+  const prefill = {
+    _fromTenant:true, forum:'EO', party:t.tenant,
+    property:[t.flat && !/^flat/i.test(t.flat) ? 'Flat No. ' + t.flat : t.flat, t.property].filter(Boolean).join(', '),
+    advocate:t.advocate, oppAdvocate:t.oppAdvocate, stage:'', remarks:[t.status, t.notes].filter(Boolean).join('\n'),
+    history:[{d:todayISO(), t:'Case filed. Moved from Individual tenants.'}, ...t.history]
+  };
+  caseForm(null, prefill, () => {
+    const i = state.tenants.indexOf(t); if(i >= 0) state.tenants.splice(i, 1);
+    save(); ui.forum = 'ALL'; ui.q = ''; go('cases');
+  });
+}
+
+/* ---------- More menus ---------- */
+function moreMenu(kind, item){
+  const isCase = kind === 'case';
+  openModal({title: isCase ? item.party : item.tenant,
+    body:`<div class="sheet-list">
+      ${isCase ? '' : `<button data-m="history">History<small>All status updates for this tenant</small></button>`}
+      <button data-m="close">Mark as closed<small>${isCase?'Disposed, dismissed, withdrawn, settled':'Vacated or no longer pursued'}</small></button>
+      <button data-m="dup">${isCase ? 'Add linked case' : 'Duplicate entry'}<small>${isCase?'Same occupant in another forum (appeal, writ, SLP)':'Another flat of the same tenant'}</small></button>
+      <button data-m="delete" class="danger">Delete<small>Removes it completely. Use Mark as closed to keep a record.</small></button>
+    </div>`,
+    onMount(root){
+      $$('[data-m]', root).forEach(b => b.addEventListener('click', async () => {
+        const m = b.dataset.m; closeTop();
+        if(m === 'history') historyModal(item, kind);
+        if(m === 'close') closeForm(item, kind);
+        if(m === 'dup'){
+          if(isCase) caseForm(null, {party:item.party, property:item.property, advocate:item.advocate, oppAdvocate:item.oppAdvocate, forum:item.forum==='EO'?'HC':item.forum});
+          else tenantForm(null, {property:item.property, tenant:item.tenant, advocate:item.advocate, oppAdvocate:item.oppAdvocate, process:item.process});
+        }
+        if(m === 'delete'){
+          if(await askConfirm(`Delete <b>${esc(isCase?item.party:item.tenant)}</b> permanently?`, 'Delete', true)){
+            const arr = isCase ? state.cases : state.tenants; const i = arr.indexOf(item);
+            if(i >= 0){ arr.splice(i, 1); save(); render(); toast('Deleted', {label:'Undo', fn:() => { arr.splice(i, 0, item); save(); render(); }}); }
+          }
+        }
+      }));
+    }});
+}
+
+/* ---------- Report data ---------- */
+function collectReport(o){
+  const t = todayISO();
+  const rep = {org:state.settings.org, title:state.settings.title, sub:state.settings.subtitle||'', asOn:t, blocks:[], name:'Status-of-pending-cases'};
+  const forums = (o.forum && o.forum !== 'ALL') ? FORUMS.filter(f => f.code === o.forum) : FORUMS;
+  const caseBlocks = () => forums.map(f => ({type:'cases', forum:f.code, sheet:f.code, heading:`List of cases before ${f.full}`, items:sortCases(state.cases.filter(c => c.forum === f.code), 'date')})).filter(b => b.items.length);
+  const tenantBlocks = () => groupTenants(state.tenants).map(g => ({type:'tenants', sheet:'Individual', heading:`Individual tenants (case yet to be filed): ${g.property}`, sub:g.property, items:g.items}));
+  const closedBlock = () => ({type:'closed', sheet:'Closed', heading:'Closed matters', items:state.closed.slice().sort((a,b)=>(b.closedOn||'').localeCompare(a.closedOn||''))});
+  if(o.type === 'full'){ rep.blocks.push(...caseBlocks(), ...tenantBlocks()); if(o.closed && state.closed.length) rep.blocks.push(closedBlock()); }
+  else if(o.type === 'cases'){ rep.blocks.push(...caseBlocks()); if(o.forum && o.forum !== 'ALL') rep.name = 'Pending-cases-' + o.forum; else rep.name = 'Pending-cases'; }
+  else if(o.type === 'tenants'){ rep.blocks.push(...tenantBlocks()); rep.title = 'Individual Tenants: Status'; rep.name = 'Individual-tenants'; }
+  else if(o.type === 'diary'){
+    const from = o.from || t, to = o.to || addDays(t, 30);
+    rep.blocks.push({type:'diary', sheet:'Hearing diary', heading:`Hearings from ${fmt(from)} to ${fmt(to)}`, items:state.cases.filter(c => c.nextDate && c.nextDate >= from && c.nextDate <= to).sort(byDate)});
+    rep.title = 'Hearing Diary'; rep.name = 'Hearing-diary';
+  }
+  else if(o.type === 'closed'){ rep.blocks.push(closedBlock()); rep.title = 'Closed Matters'; rep.name = 'Closed-matters'; }
+  else if(o.type === 'premises'){
+    const segs = o.prem && o.prem !== 'ALL' ? [o.prem] : PSEG_KEYS;
+    segs.forEach(k => premGroups(k, state.premises[k]).forEach(g => rep.blocks.push({type:'p-'+k, sheet:PSEG[k].label, sheetTitle:PSEG[k].label, heading:`${PSEG[k].label}: ${g.h}`, sub:g.h, items:g.items, total:g.total})));
+    rep.title = 'Premises Register'; rep.name = 'Premises-' + (segs.length === 1 ? PSEG[segs[0]].label.replace(/\W+/g,'-') : 'all-lists');
+  }
+  return rep;
+}
+const caseRemarks = c => [c.valuer && 'Valuer: ' + c.valuer, c.remarks, c.nextDate && c.dateNote ? c.dateNote : ''].filter(Boolean).join('\n');
+/* Columns for Excel (detailed) */
+const XCOLS = {
+  cases:[
+    {h:'Sr.', w:5, v:(c,i)=>i+1},
+    {h:'Name of the unauthorised occupant(s)', w:30, v:c=>c.party},
+    {h:'Location of the property', w:38, v:c=>c.property},
+    {h:'Case no. / year', w:24, v:c=>c.caseNo},
+    {h:'Next date', w:12, date:true, v:c=>c.nextDate},
+    {h:'Time', w:9, v:c=>fmtTime(c.time)},
+    {h:'Last date', w:12, date:true, v:c=>c.lastDate},
+    {h:'Stage / purpose', w:32, v:c=>c.stage},
+    {h:'Case status', w:16, v:c=>c.status},
+    {h:'Note on date', w:22, v:c=>c.dateNote},
+    {h:'Our advocate', w:18, v:c=>c.advocate},
+    {h:'Opponent advocate', w:24, v:c=>c.oppAdvocate},
+    {h:'Valuer', w:14, v:c=>c.valuer},
+    {h:'Remarks', w:36, v:c=>c.remarks}
+  ],
+  tenants:[
+    {h:'Sr.', w:5, v:(t,i)=>i+1},
+    {h:'Property', w:24, v:t=>t.property},
+    {h:'Flat no.', w:10, v:t=>t.flat},
+    {h:'Name of tenant', w:28, v:t=>t.tenant},
+    {h:'Advocate', w:18, v:t=>t.advocate},
+    {h:'Process', w:26, v:t=>t.process},
+    {h:'Latest status', w:44, v:t=>t.status},
+    {h:'Opponent advocate / firm', w:22, v:t=>t.oppAdvocate},
+    {h:'Last updated', w:12, date:true, v:t=>t.updated},
+    {h:'Notes', w:30, v:t=>t.notes}
+  ],
+  diary:[
+    {h:'Date', w:12, date:true, v:c=>c.nextDate},
+    {h:'Day', w:6, v:c=>WD[dObj(c.nextDate).getDay()]},
+    {h:'Time', w:9, v:c=>fmtTime(c.time)},
+    {h:'Forum', w:18, v:c=>(FORUM[c.forum]||FORUM.OTH).name},
+    {h:'Case no.', w:24, v:c=>c.caseNo},
+    {h:'Name of the occupant', w:30, v:c=>c.party},
+    {h:'Property', w:34, v:c=>c.property},
+    {h:'Stage / purpose', w:32, v:c=>c.stage},
+    {h:'Our advocate', w:18, v:c=>c.advocate}
+  ],
+  closed:[
+    {h:'Sr.', w:5, v:(x,i)=>i+1},
+    {h:'Type', w:12, v:x=>x.kind==='case'?'Case':'Individual'},
+    {h:'Name', w:30, v:x=>x.kind==='case'?x.data.party:x.data.tenant},
+    {h:'Forum / property', w:26, v:x=>x.kind==='case'?(FORUM[x.data.forum]||FORUM.OTH).name:x.data.property},
+    {h:'Case no. / flat', w:24, v:x=>x.kind==='case'?x.data.caseNo:x.data.flat},
+    {h:'Closed on', w:12, date:true, v:x=>x.closedOn},
+    {h:'Outcome', w:20, v:x=>x.outcome},
+    {h:'Note', w:40, v:x=>x.note}
+  ]
+};
+/* Columns for PDF and print (compact, width in mm on A4 landscape) */
+const PCOLS = {
+  cases:[
+    {h:'Sr.', w:9, v:(c,i)=>String(i+1)},
+    {h:'Name of the occupant and property', w:58, v:c=>c.party + (c.property?'\n'+c.property:'')},
+    {h:'Case no. / year', w:32, v:c=>c.caseNo},
+    {h:'Next date', w:24, v:c=>c.nextDate ? fmt(c.nextDate)+(c.time?'\n'+fmtTime(c.time):'') : (c.dateNote||'Not fixed'), over:c=>dateState(c)==='over'},
+    {h:'Last date', w:20, v:c=>fmt(c.lastDate)},
+    {h:'Stage / status', w:44, v:c=>[c.stage, c.status].filter(Boolean).join('\n')},
+    {h:'Advocates', w:40, v:c=>[c.advocate&&'Ours: '+c.advocate, c.oppAdvocate&&'Opp.: '+c.oppAdvocate].filter(Boolean).join('\n')},
+    {h:'Remarks', w:'auto', v:caseRemarks}
+  ],
+  tenants:[
+    {h:'Sr.', w:9, v:(t,i)=>String(i+1)},
+    {h:'Flat no.', w:18, v:t=>t.flat},
+    {h:'Name of tenant', w:50, v:t=>t.tenant},
+    {h:'Advocate', w:34, v:t=>t.advocate},
+    {h:'Process', w:45, v:t=>t.process},
+    {h:'Latest status', w:'auto', v:t=>[t.status, t.notes].filter(Boolean).join('\n')},
+    {h:'Updated', w:22, v:t=>fmt(t.updated)}
+  ],
+  diary:[
+    {h:'Date', w:24, v:c=>fmt(c.nextDate)+'\n'+WD[dObj(c.nextDate).getDay()]},
+    {h:'Time', w:18, v:c=>fmtTime(c.time)},
+    {h:'Forum', w:32, v:c=>(FORUM[c.forum]||FORUM.OTH).name},
+    {h:'Case no.', w:34, v:c=>c.caseNo},
+    {h:'Name of the occupant', w:60, v:c=>c.party},
+    {h:'Stage / purpose', w:'auto', v:c=>c.stage},
+    {h:'Our advocate', w:34, v:c=>c.advocate}
+  ],
+  closed:[
+    {h:'Sr.', w:9, v:(x,i)=>String(i+1)},
+    {h:'Type', w:20, v:x=>x.kind==='case'?'Case':'Individual'},
+    {h:'Name', w:55, v:x=>x.kind==='case'?x.data.party:x.data.tenant},
+    {h:'Forum / property', w:45, v:x=>x.kind==='case'?(FORUM[x.data.forum]||FORUM.OTH).name:x.data.property},
+    {h:'Case no. / flat', w:32, v:x=>x.kind==='case'?x.data.caseNo:x.data.flat},
+    {h:'Closed on', w:22, v:x=>fmt(x.closedOn)},
+    {h:'Outcome', w:35, v:x=>x.outcome},
+    {h:'Note', w:'auto', v:x=>x.note}
+  ]
+};
+
+
+const flatArea = f => { const a = areaFor(f); return a ? a.area : ''; };
+const flatRent = f => { const a = areaFor(f); return a ? a.rent : ''; };
+Object.assign(XCOLS, {
+  'p-flats':[
+    {h:'Sr.', w:5, v:(x,i)=>i+1}, {h:'Wing / side', w:12, v:x=>x.wing}, {h:'Floor', w:10, v:x=>x.floor}, {h:'Flat no.', w:9, v:x=>x.unit},
+    {h:'Name of occupant (as per list)', w:32, v:x=>x.name}, {h:'Current occupant / use', w:26, v:x=>x.current},
+    {h:'Servant qtr', w:10, v:x=>x.servantQtr}, {h:'Garage', w:9, v:x=>x.garage}, {h:'Court', w:15, v:x=>x.court}, {h:'Case no.', w:14, v:x=>x.caseRef},
+    {h:'Area sq. ft. (area list)', w:11, num:true, v:flatArea}, {h:'Rent (area list)', w:11, num:true, v:flatRent},
+    {h:'Tenant as per area list', w:30, v:x=>{ const a = areaFor(x); return a ? a.name : ''; }}, {h:'Remarks', w:40, v:x=>x.remarks}],
+  'p-garages':[{h:'Garage no.', w:10, v:x=>x.unit}, {h:'Flat no.', w:10, v:x=>x.flat}, {h:'Name', w:40, v:x=>x.name}, {h:'Remarks', w:36, v:x=>x.remarks}],
+  'p-quarters':[{h:'Quarter no.', w:10, v:x=>x.unit}, {h:'Allotted to', w:34, v:x=>x.name}, {h:'Servants / occupants', w:48, v:x=>x.occupants}, {h:'Remarks', w:30, v:x=>x.remarks}],
+  'p-areas':[{h:'Sr.', w:5, v:x=>x.sr}, {h:'Name of tenant', w:40, v:x=>x.name}, {h:'Floor', w:10, v:x=>x.floor}, {h:'Flat no.', w:9, v:x=>x.unit},
+    {h:'Nature of tenancy', w:44, v:x=>x.tenancy}, {h:'Area sq. ft. (approx)', w:12, num:true, tot:'area', v:x=>x.area}, {h:'Monthly rent incl. S.C.', w:13, num:true, tot:'rent', v:x=>x.rent}, {h:'Remarks', w:24, v:x=>x.remarks}]
+});
+Object.assign(PCOLS, {
+  'p-flats':[
+    {h:'Flat', w:14, v:x=>x.unit}, {h:'Floor / wing', w:28, v:x=>[x.floor, x.wing].filter(Boolean).join('\n')},
+    {h:'Name of occupant (as per list)', w:52, v:x=>x.name}, {h:'Current occupant / use', w:38, v:x=>x.current},
+    {h:'Servant qtr / garage', w:28, v:x=>[x.servantQtr && 'Qtr '+x.servantQtr, x.garage && 'Garage '+x.garage].filter(Boolean).join('\n')},
+    {h:'Court / case', w:36, v:x=>[x.court, x.caseRef].filter(Boolean).join('\n')},
+    {h:'Area list', w:34, v:x=>areaNote(x)},
+    {h:'Remarks', w:'auto', v:x=>x.remarks}],
+  'p-garages':[{h:'Garage no.', w:24, v:x=>x.unit}, {h:'Flat no.', w:30, v:x=>x.flat}, {h:'Name', w:110, v:x=>x.name}, {h:'Remarks', w:'auto', v:x=>x.remarks}],
+  'p-quarters':[{h:'Qtr no.', w:16, v:x=>x.unit}, {h:'Allotted to', w:80, v:x=>x.name}, {h:'Servants / occupants', w:110, v:x=>x.occupants}, {h:'Remarks', w:'auto', v:x=>x.remarks}],
+  'p-areas':[{h:'Sr.', w:10, v:x=>x.sr}, {h:'Name of tenant', w:70, v:x=>x.name}, {h:'Floor', w:20, v:x=>x.floor}, {h:'Flat no.', w:18, v:x=>x.unit},
+    {h:'Nature of tenancy', w:'auto', v:x=>x.tenancy}, {h:'Area sq. ft.', w:22, tot:'area', v:x=>x.area}, {h:'Rent p.m. (Rs.)', w:24, tot:'rent', v:x=>x.rent}, {h:'Remarks', w:32, v:x=>x.remarks}]
+});
+function totalRow(cols, total){ return cols.map((c, i) => c.tot ? inr(total[c.tot]) : (i === 1 ? 'Total' : '')); }
+
+/* ---------- Library loader (CDN, loaded only when needed) ---------- */
+const LIBS = {
+  xlsx:{ok:()=>window.XLSX && window.XLSX.utils, urls:['https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js']},
+  jspdf:{ok:()=>window.jspdf && window.jspdf.jsPDF, urls:['https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js','https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js']},
+  autotable:{ok:()=>window.jspdf && window.jspdf.jsPDF && window.jspdf.jsPDF.API.autoTable, urls:['https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js','https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js']}
+};
+let xlsxStyled = false;
+function loadScript(url){
+  return new Promise((res, rej) => {
+    const s = document.createElement('script'); s.src = url; s.async = true;
+    const timer = setTimeout(() => { s.remove(); rej(new Error('timeout')); }, 20000);
+    s.onload = () => { clearTimeout(timer); res(); };
+    s.onerror = () => { clearTimeout(timer); s.remove(); rej(new Error('load ' + url)); };
+    document.head.appendChild(s);
+  });
+}
+async function loadLib(name){
+  const L = LIBS[name];
+  if(L.ok()) return;
+  for(let i = 0; i < L.urls.length; i++){
+    try{ await loadScript(L.urls[i]); if(L.ok()){ if(name === 'xlsx') xlsxStyled = i === 0; return; } }catch(e){}
+  }
+  throw new Error(name + ' unavailable');
+}
+
+/* ---------- File delivery (download or share) ---------- */
+function deliver(blob, filename){
+  const canShare = (() => { try{ return !!(navigator.canShare && navigator.canShare({files:[new File([blob], filename, {type:blob.type})]})); }catch(e){ return false; } })();
+  openModal({title:'File ready',
+    body:`<p><b>${esc(filename)}</b></p><p class="muted" style="font-size:13.5px;margin-top:4px">${Math.max(1, Math.round(blob.size/1024))} KB</p>`,
+    footer:`${canShare?'<button class="btn" data-share>Share</button>':''}<button class="btn primary" data-dl>Download</button>`,
+    onMount(root){
+      root.querySelector('[data-dl]').addEventListener('click', () => {
+        const url = URL.createObjectURL(blob); const a = document.createElement('a');
+        a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000); closeTop(); toast('Downloaded ' + filename);
+      });
+      const sh = root.querySelector('[data-share]');
+      if(sh) sh.addEventListener('click', async () => {
+        try{ await navigator.share({files:[new File([blob], filename, {type:blob.type})], title:filename}); closeTop(); }
+        catch(e){ if(e.name !== 'AbortError') toast('Sharing did not work here. Use Download.'); }
+      });
+    }});
+}
+const stampName = (rep, ext) => `${rep.name}_${fmt(rep.asOn).replace(/\./g,'-')}.${ext}`;
+
+/* ---------- Excel export ---------- */
+function excelSerial(iso){ const [y,m,d] = iso.split('-').map(Number); return (Date.UTC(y,m-1,d) - Date.UTC(1899,11,30)) / 86400000; }
+function sheetPlan(rep){
+  // Returns [{name, title, groups:[{heading, items}], type}]
+  const plan = [];
+  const caseB = rep.blocks.filter(b => b.type === 'cases');
+  if(caseB.length > 1) plan.push({name:'All pending cases', type:'cases', title:'Pending cases, all forums', groups:caseB.map(b => ({heading:b.heading, items:b.items}))});
+  caseB.forEach(b => plan.push({name:b.sheet, type:'cases', title:b.heading, groups:[{heading:null, items:b.items}]}));
+  const tenB = rep.blocks.filter(b => b.type === 'tenants');
+  if(tenB.length) plan.push({name:'Individual', type:'tenants', title:'Individual tenants (case yet to be filed)', groups:tenB.map(b => ({heading:b.sub, items:b.items}))});
+  rep.blocks.filter(b => b.type === 'diary' || b.type === 'closed').forEach(b => plan.push({name:b.sheet, type:b.type, title:b.heading, groups:[{heading:null, items:b.items}]}));
+  [...new Set(rep.blocks.filter(b => b.type.startsWith('p-')).map(b => b.type))].forEach(t => {
+    const bs = rep.blocks.filter(b => b.type === t);
+    plan.push({name:bs[0].sheet, type:t, title:bs[0].sheetTitle, groups:bs.map(b => ({heading:b.sub, items:b.items, total:b.total}))});
+  });
+  return plan;
+}
+async function exportExcel(rep){
+  if(!rep.blocks.some(b => b.items.length)){ toast('Nothing to export for this choice.'); return; }
+  toast('Preparing Excel file...');
+  try{ await loadLib('xlsx'); }
+  catch(e){ toast('Excel library could not load (offline?). Saving an Excel-compatible .xls instead.'); return exportXlsFallback(rep); }
+  const X = window.XLSX, wb = X.utils.book_new();
+  const thin = {style:'thin', color:{rgb:'9AA3B5'}};
+  const B = {top:thin, bottom:thin, left:thin, right:thin};
+  const ST = {
+    title:{font:{name:'Arial', sz:13, bold:true, color:{rgb:'1C2540'}}},
+    sub:{font:{name:'Arial', sz:10, color:{rgb:'5D6679'}}},
+    group:{font:{name:'Arial', sz:10.5, bold:true, color:{rgb:'23468C'}}, fill:{patternType:'solid', fgColor:{rgb:'E8EEF8'}}, border:B, alignment:{vertical:'center'}},
+    head:{font:{name:'Arial', sz:10, bold:true, color:{rgb:'FFFFFF'}}, fill:{patternType:'solid', fgColor:{rgb:'23468C'}}, border:B, alignment:{wrapText:true, vertical:'center'}},
+    cell:{font:{name:'Arial', sz:10}, border:B, alignment:{wrapText:true, vertical:'top'}},
+    over:{font:{name:'Arial', sz:10, bold:true, color:{rgb:'B42318'}}, border:B, alignment:{vertical:'top'}, numFmt:'dd.mm.yyyy'},
+    total:{font:{name:'Arial', sz:10, bold:true}, fill:{patternType:'solid', fgColor:{rgb:'F2F4F7'}}, border:B, alignment:{vertical:'top'}}
+  };
+  const used = new Set();
+  sheetPlan(rep).forEach(sh => {
+    const cols = XCOLS[sh.type];
+    const rows = [], styles = [], merges = [];
+    const push = (arr, st) => { rows.push(arr); styles.push(st); };
+    push([rep.org], 'title'); merges.push({s:{r:0,c:0}, e:{r:0,c:cols.length-1}});
+    push([`${rep.title}: ${sh.title}  (as on ${fmt(rep.asOn)})`], 'sub'); merges.push({s:{r:1,c:0}, e:{r:1,c:cols.length-1}});
+    if(rep.sub){ push([rep.sub], 'sub'); merges.push({s:{r:2,c:0}, e:{r:2,c:cols.length-1}}); }
+    push([], null);
+    push(cols.map(c => c.h), 'head');
+    sh.groups.forEach(g => {
+      if(g.heading){ push([g.heading + `  (${g.items.length})`], 'group'); merges.push({s:{r:rows.length-1,c:0}, e:{r:rows.length-1,c:cols.length-1}}); }
+      g.items.forEach((it, i) => push(cols.map(c => { const v = c.v(it, i); return v === undefined || v === null ? '' : v; }), {item:it}));
+      if(g.total) push(cols.map((c, i) => c.tot ? g.total[c.tot] : (i === 1 ? 'Total' : '')), {total:true});
+    });
+    const ws = X.utils.aoa_to_sheet(rows);
+    rows.forEach((r, ri) => {
+      const st = styles[ri]; if(!st) return;
+      const n = (st === 'title' || st === 'sub' || st === 'group') ? cols.length : r.length;
+      for(let ci = 0; ci < n; ci++){
+        const addr = X.utils.encode_cell({r:ri, c:ci});
+        if(!ws[addr]) ws[addr] = {t:'s', v:''};
+        const cell = ws[addr];
+        if(typeof st === 'string'){ cell.s = ST[st]; continue; }
+        const col = cols[ci];
+        if(st.total){ cell.s = Object.assign({}, ST.total, typeof cell.v === 'number' ? {numFmt:'#,##0'} : {}); continue; }
+        if(col.num && numOf(cell.v) !== null){ cell.t = 'n'; cell.v = numOf(cell.v); cell.s = Object.assign({}, ST.cell, {numFmt:'#,##0'}); continue; }
+        if(col.date && validISO(cell.v)){
+          const overdue = sh.type === 'cases' && col.h === 'Next date' && cell.v < todayISO();
+          cell.t = 'n'; cell.v = excelSerial(cell.v); cell.z = 'dd.mm.yyyy';
+          cell.s = overdue ? ST.over : Object.assign({}, ST.cell, {numFmt:'dd.mm.yyyy'});
+        } else cell.s = ST.cell;
+      }
+    });
+    ws['!merges'] = merges;
+    ws['!cols'] = cols.map(c => ({wch:c.w}));
+    ws['!rows'] = rows.map((r, ri) => styles[ri] === 'title' ? {hpt:22} : styles[ri] === 'head' ? {hpt:30} : {});
+    let name = sh.name.replace(/[\\/?*[\]:]/g, '').slice(0, 31), k = 2;
+    while(used.has(name)) name = (sh.name.slice(0, 28) + ' ' + k++);
+    used.add(name);
+    X.utils.book_append_sheet(wb, ws, name);
+  });
+  const buf = X.write(wb, {bookType:'xlsx', type:'array', cellStyles:true});
+  deliver(new Blob([buf], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}), stampName(rep, 'xlsx'));
+  if(!xlsxStyled) toast('Saved without colours (backup library used).');
+}
+function exportXlsFallback(rep){
+  const plan = sheetPlan(rep);
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8">
+    <style>td,th{border:1px solid #9AA3B5;font-family:Arial;font-size:10pt;vertical-align:top;mso-number-format:"\\@"}th{background:#23468C;color:#fff}.g{background:#E8EEF8;color:#23468C;font-weight:bold}</style></head><body>
+    ${plan.map(sh => { const cols = XCOLS[sh.type]; return `<h3>${esc(rep.org)}</h3><p>${esc(rep.title)}: ${esc(sh.title)} (as on ${fmt(rep.asOn)})</p><table><tr>${cols.map(c=>`<th>${esc(c.h)}</th>`).join('')}</tr>
+      ${sh.groups.map(g => (g.heading?`<tr><td class="g" colspan="${cols.length}">${esc(g.heading)}</td></tr>`:'') + g.items.map((it,i) => `<tr>${cols.map(c => { const v = c.v(it,i); return `<td>${escBr(c.date ? fmt(v) : v)}</td>`; }).join('')}</tr>`).join('') + (g.total ? `<tr>${totalRow(cols, g.total).map(v => `<td><b>${esc(v)}</b></td>`).join('')}</tr>` : '')).join('')}</table><br>`; }).join('')}
+    </body></html>`;
+  deliver(new Blob(['\ufeff' + html], {type:'application/vnd.ms-excel'}), stampName(rep, 'xls'));
+}
+
+/* ---------- PDF export ---------- */
+function asc(s){
+  return String(s ?? '').replace(/[\u2018\u2019\u2032]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/[\u2013\u2014]/g, '-')
+    .replace(/\u2026/g, '...').replace(/\u20B9/g, 'Rs.').replace(/\u00A0/g, ' ').replace(/[^\x09\x0A\x0D\x20-\x7E\xA0-\xFF]/g, '');
+}
+async function exportPDF(rep){
+  if(!rep.blocks.some(b => b.items.length)){ toast('Nothing to export for this choice.'); return; }
+  toast('Preparing PDF...');
+  try{ await loadLib('jspdf'); await loadLib('autotable'); }
+  catch(e){ toast('PDF library could not load (offline?). Opening print, choose "Save as PDF" there.'); return printReport(rep); }
+  const {jsPDF} = window.jspdf;
+  const doc = new jsPDF({orientation:'landscape', unit:'mm', format:'a4'});
+  const W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 10;
+  let y = 14;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(28, 37, 64);
+  doc.text(asc(rep.org), M, y); y += 6;
+  doc.setFontSize(11.5); doc.text(asc(`${rep.title} (as on ${fmt(rep.asOn)})`), M, y); y += 5;
+  if(rep.sub){ doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); doc.setTextColor(93, 102, 121); doc.text(asc(rep.sub), M, y); y += 5; }
+  y += 3;
+  rep.blocks.forEach(b => {
+    if(!b.items.length) return;
+    const cols = PCOLS[b.type];
+    if(y > H - 35){ doc.addPage(); y = 14; }
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5); doc.setTextColor(35, 70, 140);
+    doc.text(asc(b.heading + `  (${b.items.length})`), M, y); y += 2.5;
+    const columnStyles = {};
+    cols.forEach((c, i) => { columnStyles[i] = c.w === 'auto' ? {cellWidth:'auto'} : {cellWidth:c.w}; });
+    doc.autoTable({
+      startY:y, margin:{left:M, right:M, top:12, bottom:14},
+      head:[cols.map(c => c.h)],
+      body:b.items.map((it, i) => cols.map(c => asc(c.v(it, i)))).concat(b.total ? [totalRow(cols, b.total)] : []),
+      theme:'grid',
+      styles:{font:'helvetica', fontSize:8, cellPadding:1.6, valign:'top', overflow:'linebreak', lineColor:[170,178,195], lineWidth:0.1, textColor:[20,24,36]},
+      headStyles:{fillColor:[35,70,140], textColor:255, fontStyle:'bold', fontSize:8.2},
+      alternateRowStyles:{fillColor:[247,248,251]},
+      columnStyles,
+      didParseCell(d){
+        if(d.section !== 'body') return;
+        if(b.total && d.row.index === b.items.length){ d.cell.styles.fontStyle = 'bold'; d.cell.styles.fillColor = [236,239,244]; return; }
+        const col = cols[d.column.index];
+        if(col.over && col.over(b.items[d.row.index])){ d.cell.styles.textColor = [180,35,24]; d.cell.styles.fontStyle = 'bold'; }
+        if(b.type === 'cases' && d.column.index === 1){ d.cell.styles.fontStyle = 'normal'; }
+      }
+    });
+    y = doc.lastAutoTable.finalY + 9;
+  });
+  const n = doc.internal.getNumberOfPages();
+  for(let i = 1; i <= n; i++){
+    doc.setPage(i); doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(110, 118, 135);
+    doc.text(asc(`${rep.org}  |  ${rep.title}  |  as on ${fmt(rep.asOn)}`), M, H - 6);
+    doc.text(`Page ${i} of ${n}`, W - M, H - 6, {align:'right'});
+  }
+  deliver(doc.output('blob'), stampName(rep, 'pdf'));
+}
+
+/* ---------- Print ---------- */
+function reportHTML(rep){
+  return `<h1>${esc(rep.org)}</h1><p class="p-sub"><b>${esc(rep.title)}</b> (as on ${fmt(rep.asOn)})${rep.sub?'<br>'+esc(rep.sub):''}</p>
+  ${rep.blocks.filter(b => b.items.length).map(b => { const cols = PCOLS[b.type]; return `<h2>${esc(b.heading)} (${b.items.length})</h2>
+    <table style="table-layout:fixed"><colgroup>${cols.map(c => `<col${c.w==='auto'?'':` style="width:${(c.w/275*100).toFixed(2)}%"`}>`).join('')}</colgroup>
+    <thead><tr>${cols.map(c => `<th>${esc(c.h)}</th>`).join('')}</tr></thead>
+    <tbody>${b.items.map((it, i) => `<tr>${cols.map(c => `<td class="${c.over && c.over(it) ? 'over' : ''}">${esc(c.v(it, i))}</td>`).join('')}</tr>`).join('')}${b.total ? `<tr>${totalRow(cols, b.total).map(v => `<td><b>${esc(v)}</b></td>`).join('')}</tr>` : ''}</tbody></table>`; }).join('')}`;
+}
+function printReport(rep){
+  if(!rep.blocks.some(b => b.items.length)){ toast('Nothing to print for this choice.'); return; }
+  $('#printArea').innerHTML = reportHTML(rep);
+  document.body.classList.add('printing');
+  const done = () => { document.body.classList.remove('printing'); window.removeEventListener('afterprint', done); };
+  window.addEventListener('afterprint', done);
+  setTimeout(() => { try{ window.print(); }catch(e){ toast('Printing is not available here. Use PDF instead.'); } setTimeout(done, 1500); }, 60);
+}
+
+/* ---------- Backup / restore / reset ---------- */
+function backup(){
+  const blob = new Blob([JSON.stringify(state, null, 1)], {type:'application/json'});
+  deliver(blob, `case-register-backup_${fmt(todayISO()).replace(/\./g,'-')}.json`);
+}
+function restoreChoice(summary, offerPrem){
+  return new Promise(res => {
+    let done = false;
+    openModal({title:'Restore from backup',
+      body:`<p>This file has ${summary}.</p>${offerPrem ? `<p class="f-note" style="margin-top:12px">To keep the cases you have updated on this device, choose <b>Add premises lists only</b>.</p>` : ''}`,
+      footer:`<button class="btn" data-close>Cancel</button>${offerPrem ? '<button class="btn" data-c="prem">Add premises lists only</button>' : ''}<button class="btn primary" data-c="all">Replace everything</button>`,
+      onMount(root){
+        $$('[data-c]', root).forEach(b => b.addEventListener('click', () => { done = true; closeTop(); res(b.dataset.c); }));
+        const obs = new MutationObserver(() => { if(!root.isConnected){ obs.disconnect(); if(!done) res(null); } });
+        obs.observe($('#modalRoot'), {childList:true});
+      }});
+  });
+}
+function onRestoreFile(e){
+  const f = e.target.files[0]; if(!f) return;
+  const rd = new FileReader();
+  rd.onload = async () => {
+    try{
+      const s = JSON.parse(rd.result);
+      if(!s || !Array.isArray(s.cases) || !Array.isArray(s.tenants)) throw new Error('shape');
+      const sp = normPremises(s.premises), spn = PSEG_KEYS.reduce((n, k) => n + sp[k].length, 0);
+      const hasLocal = state.cases.length || state.tenants.length || state.closed.length;
+      const summary = `<b>${s.cases.length}</b> cases, <b>${s.tenants.length}</b> individual tenants, <b>${(s.closed||[]).length}</b> closed matters${spn ? ` and <b>${spn}</b> premises entries (${PSEG_KEYS.map(k => sp[k].length + ' ' + PSEG[k].label.toLowerCase()).join(', ')})` : ''}`;
+      const choice = await restoreChoice(summary, spn && hasLocal);
+      if(choice === 'all'){ state = normalize(s); save(); render(); toast('Backup restored'); }
+      else if(choice === 'prem'){ state.premises = sp; save(); render(); toast('Premises lists added. Your cases are unchanged.'); }
+    }catch(err){ toast('This file is not a Case Register backup (.json).'); }
+    e.target.value = '';
+  };
+  rd.readAsText(f);
+}
+
+/* ---------- Event delegation ---------- */
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-act]'); if(!b) return;
+  const act = b.dataset.act, id = b.dataset.id;
+  switch(act){
+    case 'tab': go(b.dataset.tab); break;
+    case 'goto-forum': ui.forum = b.dataset.forum; ui.q = ''; go('cases'); break;
+    case 'forum': ui.forum = b.dataset.forum; $$('.chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.forum === ui.forum)); renderCaseList(); break;
+    case 'new-case': caseForm(null, ui.tab === 'cases' && ui.forum !== 'ALL' ? {forum:ui.forum} : null); break;
+    case 'edit-case': { const c = findCase(id); if(c) caseForm(c); break; }
+    case 'hearing': { const c = findCase(id); if(c) hearingForm(c); break; }
+    case 'history-case': { const c = findCase(id); if(c) historyModal(c, 'case'); break; }
+    case 'case-more': { const c = findCase(id); if(c) moreMenu('case', c); break; }
+    case 'new-tenant': tenantForm(null); break;
+    case 'edit-tenant': { const t = findTenant(id); if(t) tenantForm(t); break; }
+    case 'tenant-update': { const t = findTenant(id); if(t) tenantUpdate(t); break; }
+    case 'tenant-file': { const t = findTenant(id); if(t) fileCaseFromTenant(t); break; }
+    case 'tenant-more': { const t = findTenant(id); if(t) moreMenu('tenant', t); break; }
+    case 'restore': restoreClosed(id); break;
+    case 'delete-closed': {
+      const i = state.closed.findIndex(x => x.data.id === id);
+      if(i >= 0 && await askConfirm('Delete this closed matter permanently?', 'Delete', true)){ state.closed.splice(i, 1); save(); render(); }
+      break;
+    }
+    case 'rep-from-cases': ui.rep.type = 'cases'; ui.rep.forum = ui.forum; go('reports'); break;
+    case 'rep-from-tenants': ui.rep.type = 'tenants'; go('reports'); break;
+    case 'rep-excel': exportExcel(collectReport(ui.rep)); break;
+    case 'rep-pdf': exportPDF(collectReport(ui.rep)); break;
+    case 'rep-print': printReport(collectReport(ui.rep)); break;
+    case 'pseg': ui.prem.seg = b.dataset.seg; ui.prem.grp = 'ALL'; ui.prem.q = ''; renderPremises(); break;
+    case 'pheld': ui.prem.held = b.dataset.held; $$('[data-act=pheld]').forEach(c => c.setAttribute('aria-pressed', c.dataset.held === ui.prem.held)); renderPremList(); break;
+    case 'prem-add': premForm(ui.prem.seg, null); break;
+    case 'prem-edit': { const x = state.premises[ui.prem.seg].find(y => y.id === id); if(x) premForm(ui.prem.seg, x); break; }
+    case 'rep-from-premises': ui.rep.type = 'premises'; ui.rep.prem = ui.prem.seg; go('reports'); break;
+    case 'backup': backup(); break;
+    case 'restore-file': $('#restoreInput').click(); break;
+    case 'save-settings':
+      state.settings.org = $('#s-org').value.trim() || state.settings.org;
+      state.settings.title = $('#s-title').value.trim() || state.settings.title;
+      state.settings.subtitle = $('#s-sub').value.trim();
+      save(); renderNav(); toast('Heading saved'); break;
+    case 'reset':
+      if(await askConfirm('Remove all cases, tenants and closed matters from this device? Only a backup file can bring them back.', 'Clear all data', true)){
+        state = seedState(); save(); render(); toast('All data cleared from this device');
+      }
+      break;
+  }
+});
+
+/* ---------- Boot ---------- */
+$('#restoreInput').addEventListener('change', onRestoreFile);
+state = load();
+if(!localStorage.getItem(KEY)) save();
+const startTab = (location.hash || '').slice(1);
+if(TABS.some(t => t.id === startTab)) ui.tab = startTab;
+render();
+</script>
+</body>
+</html>
